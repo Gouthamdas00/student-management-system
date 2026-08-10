@@ -36,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-            
+
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
@@ -45,12 +45,9 @@ public class JwtFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
             try {
                 username = JWTservice.extractUserName(token);
-                System.out.println("DEBUG: Extracted username: " + username);
             } catch (Exception e) {
                 System.err.println("DEBUG: JWT Parsing Error -> " + e.getMessage());
             }
-        } else {
-            System.out.println("DEBUG: No Bearer header on request to: " + request.getRequestURI());
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -58,10 +55,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 UserDetails userDetails = context.getBean(MyUserDetailService.class).loadUserByUsername(username);
 
                 if (JWTservice.validateToken(token, userDetails)) {
-                    // Load user authorities
                     Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
-                    // Fallback: If DB UserDetails returned empty authorities, extract them from JWT claims
                     if (authorities == null || authorities.isEmpty()) {
                         List<String> rolesFromToken = JWTservice.extractRoles(token);
                         if (rolesFromToken != null) {
@@ -76,13 +71,9 @@ public class JwtFilter extends OncePerRequestFilter {
                     
                     authtoken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authtoken);
-
-                    System.out.println("DEBUG: Successfully authenticated user: " + username + " | Granted Authorities: " + authorities);
-                } else {
-                    System.err.println("DEBUG: Token validation returned false for: " + username);
                 }
             } catch (Exception e) {
-                System.err.println("DEBUG: User loading or validation exception: " + e.getMessage());
+                System.err.println("DEBUG: User loading/validation exception: " + e.getMessage());
             }
         }
 
@@ -91,7 +82,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
+        String path = request.getServletPath();
         return path.startsWith("/public/") || "OPTIONS".equalsIgnoreCase(request.getMethod()); 
     }
 }
