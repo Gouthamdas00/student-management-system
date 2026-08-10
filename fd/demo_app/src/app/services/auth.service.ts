@@ -2,12 +2,13 @@ import { Injectable, signal, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/public/auth'; 
+  private apiUrl = `${environment.apiUrl}/public/auth`;
 
   userRole = signal<string | null>(this.getStoredRole());
   token = signal<string | null>(this.getStoredToken());
