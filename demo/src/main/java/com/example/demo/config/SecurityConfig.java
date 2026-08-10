@@ -41,8 +41,9 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         .cors(Customizer.withDefaults())
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
+            .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.ERROR, jakarta.servlet.DispatcherType.FORWARD).permitAll()
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-            .requestMatchers("/public/**", "/error").permitAll() // Added /error here
+            .requestMatchers("/public/**", "/error").permitAll() // Added /error explicitly
             .requestMatchers("/private/**").authenticated() 
             .anyRequest().authenticated()                
         )
