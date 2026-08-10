@@ -13,32 +13,26 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/demo_app",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
-            "tsConfig": "tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "security": {
-              "allowedHosts": []
+             "outputPath": "dist/demo_app",
+             "index": "src/index.html",
+             "browser": "src/main.ts",
+             "polyfills": [
+                "zone.js"
+             ],
+             "tsConfig": "tsconfig.app.json",
+             "assets": [
+               {
+                 "glob": "**/*",
+                 "input": "public"
+               }
+             ],
+             "styles": [
+               "src/styles.css"
+             ],
+             "scripts": [],
+             "prerender": false,
+             "ssr": false
             },
-            "ssr": {
-              "entry": "src/server.ts"
-            }
-          },
           "configurations": {
             "production": {
               "budgets": [

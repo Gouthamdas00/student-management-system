@@ -3,7 +3,7 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 export const serverRoutes: ServerRoute[] = [
   {
     path: 'departments/edit/:id',
-    renderMode: RenderMode.Client // Renders on the browser when navigated to
+    renderMode: RenderMode.Client
   },
   {
     path: 'departments/:id/staff',
@@ -11,6 +11,6 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: '**',
-    renderMode: RenderMode.Prerender // Keeps SSG for static routes
+    renderMode: RenderMode.Prerender
   }
 ];
