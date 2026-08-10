@@ -1,0 +1,154 @@
+<div class="dashboard-layout">
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+    <div class="departments-page-container" style="max-width: 1100px; margin: 0 auto; font-family: 'Proxima Nova', sans-serif;">
+      
+      <!-- Header & Action Toolbar -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+        <div>
+          <h1 style="font-size: 2.25rem; font-weight: 400; color: #2C221E; margin: 0; font-family: serif;">Department Directory</h1>
+          <p style="color: #7A6B63; font-size: 0.95rem; margin-top: 0.25rem;">Manage academic departments, view faculty, and track student enrollments.</p>
+        </div>
+        
+        <a 
+          *ngIf="!authService.isUser()" 
+          routerLink="/departments/add" 
+          style="background: #C27835; color: #FFFFFF; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(194, 120, 53, 0.25); display: inline-flex; align-items: center; gap: 0.5rem;">
+          + Add Department
+        </a>
+      </div>
+
+      <!-- Search & Filter Controls Toolbar -->
+      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; background: #FFFFFF; padding: 1rem; border-radius: 10px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+        
+        <div style="flex: 1; position: relative;">
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            (input)="onSearch()" 
+            placeholder="Search by department name or code..." 
+            style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border: 1px solid #E2D9D2; border-radius: 8px; font-size: 0.95rem; background: #FAFAFA; color: #2C221E; outline: none;">
+          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: #999;">🔍</span>
+        </div>
+
+        <div style="width: 220px;">
+          <select 
+            (change)="onSortChange($event)" 
+            style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #E2D9D2; border-radius: 8px; font-size: 0.95rem; background: #FAFAFA; color: #2C221E; outline: none; cursor: pointer;">
+            <option value="default">Sort by: Default</option>
+            <option value="name-asc">Name: A to Z</option>
+            <option value="students-high">Students: High to Low</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Department Data Card Table -->
+      <div class="data-card" style="background: #FFFFFF; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); border: 1px solid rgba(0,0,0,0.04);">
+        
+        <p *ngIf="isLoading" style="text-align: center; color: #7A6B63; padding: 2rem;">Loading department records...</p>
+        
+        <p *ngIf="!isLoading && filteredDepartments.length === 0" style="text-align: center; color: #7A6B63; padding: 2rem;">
+          No matching department records found.
+        </p>
+
+        <div class="table-responsive" *ngIf="!isLoading && filteredDepartments.length > 0">
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="text-align: left; border-bottom: 2px solid rgba(0,0,0,0.05); color: #7A6B63; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">
+                <!-- Center aligned Dept ID header -->
+                <th style="padding-bottom: 1rem; text-align: center;">Dept ID</th>
+                <th style="padding-bottom: 1rem; padding-left: 1rem;">Department Name</th>
+                <th style="padding-bottom: 1rem;">Head of Department</th>
+                <!-- Center aligned Total Students header -->
+                <th style="padding-bottom: 1rem; text-align: center;">Total Students</th>
+                <th *ngIf="!authService.isUser()" style="padding-bottom: 1rem; text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Entire TR is now clickable to view staff -->
+              <tr 
+                *ngFor="let dept of filteredDepartments" 
+                (click)="navigateToStaff(dept.id)"
+                class="department-row"
+                style="border-bottom: 1px solid rgba(0,0,0,0.03); cursor: pointer; transition: background 0.15s ease;">
+                
+                <!-- Center aligned Dept ID cell -->
+                <td style="padding: 1.25rem 0; font-weight: 600; color: #2C221E; text-align: center;">{{ dept.id || dept.code }}</td>
+                <td style="padding: 1.25rem 0 ;padding-left: 1rem; color: #2C221E; font-weight: 500;">{{ dept.name }}</td>
+                <td style="padding: 1.25rem 0; color: #2C221E; font-weight: 500;">{{ dept.headOfDepartment }}</td>
+                <!-- Center aligned Total Students cell -->
+                <td style="padding: 1.25rem 0; font-weight: 600; color: #C27835; text-align: center;">{{ dept.studentCount ?? 'N/A' }}</td>
+                
+                <!-- Action Buttons: Stop propagation so row navigation isn't triggered -->
+                <td *ngIf="!authService.isUser()" 
+                    (click)="$event.stopPropagation()" 
+                    style="padding: 1.25rem 0; text-align: right; display: flex; justify-content: flex-end; gap: 0.5rem;">
+                  
+                  <a 
+                    [routerLink]="['/departments/edit', dept.id]" 
+                    (click)="$event.stopPropagation()"
+                    style="background: #F8F5F0; color: #8C6D53; border: 1px solid #E2D9D2; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; text-decoration: none;">
+                    Edit
+                  </a>
+
+                  <button 
+                    type="button"
+                    (click)="$event.stopPropagation(); deleteDepartment(dept)" 
+                    style="background: #FFF1F0; color: #E5484D; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                    Remove
+                  </button>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p *ngIf="!isLoading && filteredDepartments.length > 0" 
+           style="text-align: right; font-family: 'Migra', serif; font-style: italic; font-size: 0.8rem; font-weight: 300; color: #A09087; margin: 0.5rem 0 0 0;">
+          * click on the department for the staff details
+        </p>
+        <!-- Pagination Bar -->
+        <div *ngIf="!isLoading && totalElements > 0" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #E2D9D2;">
+          
+          <span style="color: #7A6B63; font-size: 0.85rem;">
+            Showing {{ (currentPage * pageSize) + 1 }} to {{ Math.min((currentPage + 1) * pageSize, totalElements) }} of {{ totalElements }} entries
+          </span>
+
+          <div style="display: flex; gap: 0.35rem; align-items: center;">
+            <button 
+              (click)="goToPage(currentPage - 1)" 
+              [disabled]="currentPage === 0"
+              style="padding: 0.4rem 0.75rem; border-radius: 6px; border: 1px solid #E2D9D2; background: transparent; color: #2C221E; font-size: 0.85rem;"
+              [style.opacity]="currentPage === 0 ? '0.4' : '1'"
+              [style.cursor]="currentPage === 0 ? 'not-allowed' : 'pointer'">
+              Previous
+            </button>
+
+            <button 
+              *ngFor="let p of pages" 
+              (click)="goToPage(p)"
+              [style.background]="p === currentPage ? '#C27835' : 'transparent'"
+              [style.color]="p === currentPage ? '#FFFFFF' : '#2C221E'"
+              [style.borderColor]="p === currentPage ? '#C27835' : '#E2D9D2'"
+              style="padding: 0.4rem 0.75rem; border-radius: 6px; border: 1px solid; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+              {{ p + 1 }}
+            </button>
+
+            <button 
+              (click)="goToPage(currentPage + 1)" 
+              [disabled]="currentPage >= totalPages - 1"
+              style="padding: 0.4rem 0.75rem; border-radius: 6px; border: 1px solid #E2D9D2; background: transparent; color: #2C221E; font-size: 0.85rem;"
+              [style.opacity]="currentPage >= totalPages - 1 ? '0.4' : '1'"
+              [style.cursor]="currentPage >= totalPages - 1 ? 'not-allowed' : 'pointer'">
+              Next
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,179 @@
+@font-face {
+  font-family: 'Migra Bold'; /* Distinct name for the Bold font */
+  src: url('/fonts/Migra-Extrabold.84a37b642bf73c2f727d4a27.2e3da3c9f5a2564e259d6f8e40ae617b.woff2') format('woff2'),
+       url('/fonts/Migra-Extrabold.84a37b642bf73c2f727d4a27.2e3da3c9f5a2564e259d6f8e40ae617b.otf') format('opentype');
+  font-weight: normal; /* Let the font file dictate the weight */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Migra Light'; /* Distinct name for the Light font */
+  src: url('/fonts/Migra-Extralight.8dd8fa24cfa7bdc1e988b38.9e115b3c42b25d2b1f8af902e68b7b6e.woff2') format('woff2'),
+       url('/fonts/Migra-Extralight.8dd8fa24cfa7bdc1e988b38.9e115b3c42b25d2b1f8af902e68b7b6e.otf') format('opentype');
+  font-weight: normal; /* Let the font file dictate the weight */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('/fonts/Fontspring-DEMO-proximanova-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('/fonts/Fontspring-DEMO-proximanova-semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+:root {
+  --bg-beige: #F9F6F0;
+  --brand-orange: #C07C4A; 
+  --brand-orange-hover: #A6683B;
+  --text-dark: #2A2825;
+  --text-muted: #6B6863;
+  
+  /* Apply the distinct font names here */
+  --font-display-bold: 'Migra Bold', serif;
+  --font-display-light: 'Migra Light', serif;
+  --font-body: 'Proxima Nova', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-beige);
+  color: var(--text-dark);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  /* This prevents horizontal scrolling from the star, but allows normal vertical scrolling */
+  overflow-x: hidden; 
+}
+
+/* Global Button Styles */
+.btn {
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-solid {
+  background-color: var(--brand-orange);
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+}
+
+.btn-solid:hover {
+  background-color: var(--brand-orange-hover);
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--text-dark);
+  padding: 0.75rem 1.5rem;
+}
+
+.btn-text:hover {
+  color: var(--brand-orange);
+}
+
+/* Layout Wrapper */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #F8F5F0; /* Warm beige page background */
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  padding: 2.5rem 4rem;
+  overflow-y: auto;
+}
+
+/* Shared Responsive Layout */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #F8F5F0;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2.5rem 4rem;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* Responsive Table Wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+  min-width: 600px; /* Prevents text squeezing on narrow screens */
+}
+
+/* Tablet & Mobile Media Queries */
+@media (max-width: 992px) {
+  .main-content {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .main-content {
+    padding: 1.25rem 1rem !important;
+  }
+
+  /* Force 2-column form grids to single column */
+  .responsive-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Force header toolbars & search bars to stack */
+  .responsive-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+  }
+
+  .responsive-toolbar > div {
+    width: 100% !important;
+  }
+
+  /* Header action row stacking */
+  .responsive-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+
+  .responsive-header a, 
+  .responsive-header button {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}

@@ -1,0 +1,102 @@
+.landing-page {
+  height: 100vh; /* Strictly limits height to the exact viewport size */
+  overflow: hidden; /* Completely locks both vertical and horizontal scrolling */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 5%;
+}
+
+/* Star Background Graphic - Moved OUTSIDE the media query */
+.bg-star {
+  position: absolute;
+  top: 50%;
+  right: -10vw; /* Nudges the star off the right edge */
+  transform: translateY(-50%); /* Centers vertically */
+  height: 140vh; /* Makes it massive */
+  width: auto; 
+  max-width: none;
+  z-index: 0;
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative; /* Keeps navbar above the star */
+  z-index: 10;
+}
+
+.logo {
+  font-family: var(--font-display-light); /* Now explicitly uses Migra Light */
+  font-size: 1.6rem;
+  color: var(--text-dark);
+  letter-spacing: 1px;
+}
+
+/* Hero Content */
+.hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative; /* Keeps hero above the star */
+  z-index: 10;
+}
+
+.hero-content {
+  max-width: 650px;
+}
+
+.display-title {
+  font-family: var(--font-display-light); /* Points to Migra Light */
+  font-size: 5.5rem;
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+  color: var(--text-dark);
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+  max-width: 80%;
+  font-weight: 400;
+}
+
+.btn-large {
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+}
+
+/* Responsive adjustments for smaller screens */
+.display-title {
+  font-family: var(--font-display-light);
+  font-size: 5.5rem;
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+  color: var(--text-dark);
+  font-weight: normal; /* This overrides the browser's default h1 bolding! */
+}
+  
+.bg-star {
+  position: absolute;
+  top: 100%;
+  right: 0; 
+  /* translate(50%) moves the image to the right by exactly half of its own width */
+  transform: translate(40%, -60%); 
+  height: 150vh; 
+  width: auto; 
+  max-width: none;
+  z-index: 0;
+  opacity: 1;
+  pointer-events: none;
+}

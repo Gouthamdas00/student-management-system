@@ -1,0 +1,99 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(44, 34, 30, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.modal-card {
+  background: #FFFFFF;
+  width: 90%;
+  max-width: 420px;
+  border-radius: 12px;
+  padding: 1.75rem;
+  box-shadow: 0 12px 32px rgba(44, 34, 30, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: scaleUp 0.15s ease-out;
+}
+
+.modal-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #FFF1F0;
+  color: #E5484D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.modal-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2C221E;
+}
+
+.modal-content p {
+  margin: 0 0 1.5rem 0;
+  font-size: 0.9rem;
+  color: #6E5D53;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.btn-cancel, .btn-confirm {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel {
+  background: #F4EFEA;
+  color: #2C221E;
+}
+
+.btn-cancel:hover {
+  background: #E8DFD7;
+}
+
+.btn-confirm {
+  background: #E5484D;
+  color: #FFFFFF;
+}
+
+.btn-confirm:hover {
+  background: #C9373C;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

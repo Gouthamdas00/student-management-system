@@ -1,0 +1,57 @@
+<div class="auth-wrapper">
+  <!-- Giant Background Star Graphic -->
+  <img src="/STAR.png" alt="Decorative Star" class="bg-star" />
+
+  <!-- Back button to return to home (Uses routerLink!) -->
+  <a class="btn btn-text back-btn" routerLink="/">← Back</a>
+
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="logo">STUDENT NOW</div>
+      <h2 class="auth-title">Create Account</h2>
+      <p class="auth-subtitle">Register to manage student records.</p>
+    </div>
+
+    <!-- The Updated Form -->
+    <form class="auth-form" (ngSubmit)="onSubmit()">
+      
+      <div class="error-alert" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" [(ngModel)]="registerData.username" placeholder="Choose a username" required>
+      </div>
+
+      <!-- Role Selection (Radio Buttons) -->
+      <div class="input-group">
+        <label>Account Role</label>
+        <div class="radio-group">
+          <label class="radio-label">
+            <!-- Updated to roleName and ROLE_USER -->
+            <input type="radio" name="roleName" value="ROLE_USER" [(ngModel)]="registerData.roleName" required>
+            User
+          </label>
+          <label class="radio-label">
+            <!-- Updated to roleName and ROLE_ADMIN -->
+            <input type="radio" name="roleName" value="ROLE_ADMIN" [(ngModel)]="registerData.roleName" required>
+            Admin
+          </label>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="registerData.password" placeholder="Create a password" required>
+      </div>
+
+      <button type="submit" class="btn btn-solid btn-full" [disabled]="isLoading">
+        {{ isLoading ? 'Registering...' : 'Register' }}
+      </button>
+    </form>
+
+    <!-- Footer (Uses routerLink!) -->
+    <div class="auth-footer">
+      <p>Already have an account? <a routerLink="/login">Sign in</a></p>
+    </div>
+  </div>
+</div>

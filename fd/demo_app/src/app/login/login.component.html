@@ -1,0 +1,44 @@
+<div class="auth-wrapper">
+  
+<a class="btn btn-text back-btn" routerLink="/">← Back</a>
+
+  
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="logo">STUDENT NOW</div>
+      <h2 class="auth-title">Welcome Back</h2>
+      <p class="auth-subtitle">Please enter your details to sign in.</p>
+    </div>
+
+<form class="auth-form" (ngSubmit)="onSubmit()">
+      
+      <div class="error-alert" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" [(ngModel)]="loginData.username" placeholder="Enter your username" required>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="loginData.password" placeholder="Enter your password" required>
+      </div>
+
+      <div class="form-actions">
+        <label class="remember-me">
+          <input type="checkbox"> Remember me
+        </label>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn btn-solid btn-full" [disabled]="isLoading">
+        {{ isLoading ? 'Signing In...' : 'Sign In' }}
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>Don't have an account? <a routerLink="/register">Register here</a></p>
+    </div>
+  </div>
+   <img src="/STAR.png" alt="Decorative Star" class="bg-star" />
+</div>

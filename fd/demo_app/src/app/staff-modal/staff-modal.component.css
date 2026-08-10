@@ -1,0 +1,301 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(44, 34, 30, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.modal-card {
+  background: #FFFFFF;
+  width: 90%;
+  max-width: 680px;
+  border-radius: 14px;
+  padding: 2rem;
+  box-shadow: 0 16px 40px rgba(44, 34, 30, 0.2);
+  display: flex;
+  flex-direction: column;
+  animation: scaleUp 0.15s ease-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-family: serif;
+  color: #2C221E;
+}
+
+.modal-header p {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.85rem;
+  color: #7A6B63;
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #7A6B63;
+}
+
+.tab-navigation {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid #E2D9D2;
+  margin-bottom: 1.25rem;
+}
+
+.tab-navigation button {
+  background: transparent;
+  border: none;
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #7A6B63;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tab-navigation button.active {
+  color: #C27835;
+  border-bottom-color: #C27835;
+}
+
+.tab-body {
+  min-height: 260px;
+}
+
+.state-message {
+  text-align: center;
+  color: #7A6B63;
+  padding: 3rem 0;
+}
+
+.table-container {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #7A6B63;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #E2D9D2;
+}
+
+td {
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.03);
+  font-size: 0.9rem;
+  color: #2C221E;
+}
+
+.font-bold { font-weight: 600; }
+.text-amber { color: #C27835; font-weight: 600; }
+
+.badge {
+  background: #F8F5F0;
+  color: #8C6D53;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  border: 1px solid #E2D9D2;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2C221E;
+}
+
+.form-group input {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #E2D9D2;
+  border-radius: 8px;
+  background: #FAFAFA;
+  outline: none;
+}
+
+.btn-submit {
+  grid-column: span 2;
+  background: #C27835;
+  color: #FFFFFF;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.upload-box {
+  border: 2px dashed #E2D9D2;
+  background: #FAFAFA;
+  border-radius: 12px;
+  padding: 2.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+.btn-select-file {
+  background: #F8F5F0;
+  color: #8C6D53;
+  border: 1px solid #E2D9D2;
+  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+/* Lock host and layout to full viewport height */
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.dashboard-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.staff-page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Header & Search sections stay fixed at top */
+.header-section {
+  flex-shrink: 0;
+  margin-bottom: 1.5rem;
+}
+
+.search-section {
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+}
+
+/* Data Card fills remaining space without overflowing window */
+.data-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Crucial for nested flexbox scrolling */
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+/* Table container scrolls internally */
+.table-responsive {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  min-height: 0;
+  padding-right: 0.5rem;
+}
+
+/* Sticky Header so column titles stay visible while scrolling */
+.table-responsive table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-responsive thead {
+  position: sticky;
+  top: 0;
+  background: #FFFFFF;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Form views overflow-y auto if height exceeds card */
+.form-container {
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+/* Styled Scrollbar */
+.table-responsive::-webkit-scrollbar,
+.form-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track,
+.form-container::-webkit-scrollbar-track {
+  background: #FAFAFA;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb,
+.form-container::-webkit-scrollbar-thumb {
+  background: #E2D9D2;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover,
+.form-container::-webkit-scrollbar-thumb:hover {
+  background: #C27835;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }

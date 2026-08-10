@@ -1,0 +1,37 @@
+<div class="mobile-header">
+  <span class="logo">STUDENT NOW</span>
+  <button class="hamburger-btn" (click)="toggleMenu()">
+    {{ isMobileMenuOpen ? '✕' : '☰' }}
+  </button>
+</div>
+
+<div class="sidebar-overlay" *ngIf="isMobileMenuOpen" (click)="closeMenu()"></div>
+
+<aside class="sidebar" [class.mobile-open]="isMobileMenuOpen">
+  <div class="sidebar-header desktop-only">
+    <div class="logo">STUDENT NOW</div>
+  </div>
+
+  <ul class="nav-links">
+    <li>
+      <a routerLink="/dashboard" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: true} ">Overview</a>
+    </li>
+    <li>
+      <a routerLink="/students" routerLinkActive="active">Students</a>
+    </li>
+    <li>
+      <a routerLink="/departments" routerLinkActive="active">Departments</a>
+    </li>
+    <li *ngIf="!authService.isUser()">
+      <a routerLink="/settings" routerLinkActive="active">Settings</a>
+    </li>
+  </ul>
+
+  <div class="sidebar-footer">
+    <div class="user-profile">
+      <div class="avatar"></div>
+      <span class="user-name">{{ username }}</span>
+    </div>
+    <button class="btn-text logout-btn" (click)="logout()">Logout</button>
+  </div>
+</aside>

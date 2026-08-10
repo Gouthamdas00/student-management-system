@@ -1,0 +1,212 @@
+<div class="dashboard-layout">
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+    <div class="staff-page-container">
+      
+      <!-- Back Link & Header (Fixed) -->
+      <div class="header-section">
+        <a routerLink="/departments" style="color: #8C6D53; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.35rem; margin-bottom: 0.5rem;">
+          ← Back to Departments
+        </a>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+          <div>
+            <h1 style="font-size: 2.25rem; font-weight: 400; color: #2C221E; margin: 0; font-family: serif;">Department Faculty Directory</h1>
+            <p style="color: #7A6B63; font-size: 0.95rem; margin-top: 0.25rem;">View active faculty members, subjects taught, and upload bulk Excel rosters.</p>
+          </div>
+
+          <!-- Action Buttons Group -->
+          <div *ngIf="!authService.isUser()" style="display: flex; gap: 0.75rem;">
+            <button 
+              type="button" 
+              (click)="activeView = 'manual'"
+              [style.background]="activeView === 'manual' ? '#C27835' : '#F8F5F0'"
+              [style.color]="activeView === 'manual' ? '#FFFFFF' : '#8C6D53'"
+              style="border: 1px solid #E2D9D2; padding: 0.65rem 1.25rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; cursor: pointer;">
+              ✏️ Manual Add
+            </button>
+
+            <button 
+              type="button" 
+              (click)="activeView = 'excel'"
+              [style.background]="activeView === 'excel' ? '#C27835' : '#F8F5F0'"
+              [style.color]="activeView === 'excel' ? '#FFFFFF' : '#8C6D53'"
+              style="border: 1px solid #E2D9D2; padding: 0.65rem 1.25rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; cursor: pointer;">
+              📁 Excel Import
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Toolbar (Fixed) -->
+      <div *ngIf="activeView === 'list'" class="search-section" style="background: #FFFFFF; padding: 0.85rem 1rem; border-radius: 10px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+        <div style="position: relative;">
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            (input)="onSearch()" 
+            placeholder="Search faculty by name, subject, designation, or email..." 
+            style="width: 100%; padding: 0.7rem 1rem 0.7rem 2.5rem; border: 1px solid #E2D9D2; border-radius: 8px; font-size: 0.95rem; background: #FAFAFA; color: #2C221E; outline: none; box-sizing: border-box;">
+          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: #999;">🔍</span>
+        </div>
+      </div>
+
+      <!-- View 1: Staff Directory Table Card (Internal Scroll) -->
+      <div *ngIf="activeView === 'list'" class="data-card">
+        
+        <p *ngIf="isLoading" style="text-align: center; color: #7A6B63; padding: 2.5rem;">Loading faculty records...</p>
+
+        <p *ngIf="!isLoading && staffList.length === 0" style="text-align: center; color: #7A6B63; padding: 2.5rem;">
+          No staff members registered for this department yet.
+        </p>
+
+        <p *ngIf="!isLoading && staffList.length > 0 && filteredStaffList.length === 0" style="text-align: center; color: #7A6B63; padding: 2.5rem;">
+          No faculty members match your search criteria.
+        </p>
+
+        <!-- Scrollable Table Container -->
+        <div class="table-responsive" *ngIf="!isLoading && filteredStaffList.length > 0">
+          <table>
+            <thead>
+              <tr style="text-align: left; border-bottom: 2px solid rgba(0,0,0,0.05); color: #7A6B63; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">
+                <th style="padding: 0.85rem 0;">Faculty Name</th>
+                <th style="padding: 0.85rem 0;">Designation</th>
+                <th style="padding: 0.85rem 0;">Subject Handled</th>
+                <th style="padding: 0.85rem 0;">Email Address</th>
+                <th *ngIf="!authService.isUser()" style="padding: 0.85rem 0; text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let staff of filteredStaffList" style="border-bottom: 1px solid rgba(0,0,0,0.03);">
+                <td style="padding: 1rem 0; font-weight: 600; color: #2C221E;">{{ staff.name }}</td>
+                <td style="padding: 1rem 0;">
+                  <span style="background: #F8F5F0; color: #8C6D53; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; border: 1px solid #E2D9D2; font-weight: 600;">
+                    {{ staff.designation || 'Faculty' }}
+                  </span>
+                </td>
+                <td style="padding: 1rem 0; font-weight: 600; color: #C27835;">{{ staff.subject || 'N/A' }}</td>
+                <td style="padding: 1rem 0; color: #7A6B63;">{{ staff.email || 'N/A' }}</td>
+                
+                <td *ngIf="!authService.isUser()" style="padding: 1rem 0; text-align: right; display: flex; justify-content: flex-end; gap: 0.5rem;">
+                  <button 
+                    type="button"
+                    (click)="openEditStaff(staff)" 
+                    style="background: #F8F5F0; color: #8C6D53; border: 1px solid #E2D9D2; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                    Edit
+                  </button>
+
+                  <button 
+                    type="button"
+                    (click)="deleteStaff(staff)" 
+                    style="background: #FFF1F0; color: #E5484D; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- View 2: Manual Add Form -->
+      <div *ngIf="activeView === 'manual'" class="data-card form-container" style="max-width: 600px; margin: 0 auto; width: 100%;">
+        <h2 style="font-size: 1.35rem; color: #2C221E; margin-top: 0; font-family: serif;">Add Faculty Member</h2>
+        <p style="color: #7A6B63; font-size: 0.9rem; margin-bottom: 1.5rem;">Enter faculty credentials to assign them to this department.</p>
+
+        <form (ngSubmit)="onAddManualStaff()" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #2C221E; margin-bottom: 0.35rem;">Staff Name *</label>
+            <input type="text" [(ngModel)]="newStaff.name" name="name" placeholder="e.g. Dr. Alan Turing" required style="width: 100%; padding: 0.75rem; border: 1px solid #E2D9D2; border-radius: 8px; background: #FAFAFA; outline: none; box-sizing: border-box;">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #2C221E; margin-bottom: 0.35rem;">Designation</label>
+            <input type="text" [(ngModel)]="newStaff.designation" name="designation" placeholder="e.g. Associate Professor" style="width: 100%; padding: 0.75rem; border: 1px solid #E2D9D2; border-radius: 8px; background: #FAFAFA; outline: none; box-sizing: border-box;">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #2C221E; margin-bottom: 0.35rem;">Subject Handled</label>
+            <input type="text" [(ngModel)]="newStaff.subject" name="subject" placeholder="e.g. Data Structures & Algorithms" style="width: 100%; padding: 0.75rem; border: 1px solid #E2D9D2; border-radius: 8px; background: #FAFAFA; outline: none; box-sizing: border-box;">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #2C221E; margin-bottom: 0.35rem;">Email Address</label>
+            <input type="email" [(ngModel)]="newStaff.email" name="email" placeholder="e.g. alan.t@college.edu" style="width: 100%; padding: 0.75rem; border: 1px solid #E2D9D2; border-radius: 8px; background: #FAFAFA; outline: none; box-sizing: border-box;">
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+            <button type="button" (click)="activeView = 'list'" style="flex: 1; padding: 0.75rem; border: 1px solid #E2D9D2; background: #F8F5F0; color: #2C221E; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              Cancel
+            </button>
+            <button type="submit" [disabled]="isSubmitting" style="flex: 1; padding: 0.75rem; border: none; background: #C27835; color: #FFFFFF; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              {{ isSubmitting ? 'Saving...' : 'Save Faculty' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- View 3: Edit Faculty Member Form -->
+      <div *ngIf="activeView === 'edit'" class="data-card form-container" style="max-width: 600px; margin: 0 auto; width: 100%;">
+        <h2 style="font-size: 1.35rem; color: #2C221E; margin-top: 0; font-family: serif;">Edit Faculty Member</h2>
+        <p style="color: #7A6B63; font-size: 0.9rem; margin-bottom: 1.5rem;">Update details and assignments for this faculty member.</p>
+
+        <form (ngSubmit)="onUpdateStaff()" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #2C221E; margin-bottom: 0.35rem;">Staff Name *</label>
+            <input type="text" [(ngModel)]="editingStaff.name" name="editName" required style="width: 100%; padding: 0.75rem; border: 1px solid #E2D9D2; border-radius: 8px; background: #FAFAFA; outline: none; box-sizing: border-box;">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #2C221E; margin-bottom: 0.35rem;">Designation</label>
+            <input type="text" [(ngModel)]="editingStaff.designation" name="editDesignation" style="width: 100%; padding: 0.75rem; border: 1px solid #E2D9D2; border-radius: 8px; background: #FAFAFA; outline: none; box-sizing: border-box;">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #2C221E; margin-bottom: 0.35rem;">Subject Handled</label>
+            <input type="text" [(ngModel)]="editingStaff.subject" name="editSubject" style="width: 100%; padding: 0.75rem; border: 1px solid #E2D9D2; border-radius: 8px; background: #FAFAFA; outline: none; box-sizing: border-box;">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #2C221E; margin-bottom: 0.35rem;">Email Address</label>
+            <input type="email" [(ngModel)]="editingStaff.email" name="editEmail" style="width: 100%; padding: 0.75rem; border: 1px solid #E2D9D2; border-radius: 8px; background: #FAFAFA; outline: none; box-sizing: border-box;">
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+            <button type="button" (click)="activeView = 'list'" style="flex: 1; padding: 0.75rem; border: 1px solid #E2D9D2; background: #F8F5F0; color: #2C221E; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              Cancel
+            </button>
+            <button type="submit" [disabled]="isSubmitting" style="flex: 1; padding: 0.75rem; border: none; background: #C27835; color: #FFFFFF; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              {{ isSubmitting ? 'Updating...' : 'Update Faculty' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- View 4: Excel Import View -->
+      <div *ngIf="activeView === 'excel'" class="data-card form-container" style="max-width: 600px; margin: 0 auto; width: 100%; text-align: center; border: 2px dashed #E2D9D2; align-items: center; justify-content: center;">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">📊</div>
+        <h2 style="font-size: 1.35rem; color: #2C221E; margin-top: 0; font-family: serif;">Upload Faculty Excel Sheet</h2>
+        <p style="color: #7A6B63; font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">
+          Ensure your file columns are ordered: <strong>Name</strong>, <strong>Subject</strong>, <strong>Designation</strong>, <strong>Email</strong>.
+        </p>
+
+        <input type="file" (change)="onFileSelected($event)" accept=".xlsx, .xls, .csv" id="excelInput" style="display: none;">
+
+        <button type="button" onclick="document.getElementById('excelInput').click()" style="background: #F8F5F0; color: #8C6D53; border: 1px solid #E2D9D2; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; cursor: pointer;">
+          {{ selectedFile ? selectedFile.name : 'Choose Excel / CSV File' }}
+        </button>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 2rem; justify-content: center;">
+          <button type="button" (click)="activeView = 'list'" style="padding: 0.75rem 1.5rem; border: 1px solid #E2D9D2; background: #F8F5F0; color: #2C221E; border-radius: 8px; font-weight: 600; cursor: pointer;">
+            Cancel
+          </button>
+          <button *ngIf="selectedFile" type="button" (click)="onUploadExcel()" [disabled]="isSubmitting" style="padding: 0.75rem 1.5rem; border: none; background: #C27835; color: #FFFFFF; border-radius: 8px; font-weight: 600; cursor: pointer;">
+            {{ isSubmitting ? 'Importing...' : 'Upload & Import Staff' }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
