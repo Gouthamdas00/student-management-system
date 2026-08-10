@@ -53,11 +53,11 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     return http.build();
 }
 
-    @Bean
+   @Bean
 public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
 
-    // Fix: Use setAllowedOriginPatterns instead of setAllowedOrigins when allowCredentials is true
+    // ✅ FIXED: Use setAllowedOriginPatterns instead of setAllowedOrigins
     configuration.setAllowedOriginPatterns(List.of(
         "http://localhost:4200",
         "https://*.vercel.app"
