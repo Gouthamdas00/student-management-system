@@ -1,29 +1,29 @@
 @font-face {
-  font-family: 'Migra Bold'; /* Distinct name for the Bold font */
-  src: url('/fonts/Migra-Extrabold.84a37b642bf73c2f727d4a27.2e3da3c9f5a2564e259d6f8e40ae617b.woff2') format('woff2'),
-       url('/fonts/Migra-Extrabold.84a37b642bf73c2f727d4a27.2e3da3c9f5a2564e259d6f8e40ae617b.otf') format('opentype');
-  font-weight: normal; /* Let the font file dictate the weight */
+  font-family: 'Migra Bold';
+  src: url('assets/fonts/Migra-Extrabold.woff2') format('woff2'),
+       url('assets/fonts/Migra-Extrabold.otf') format('opentype');
+  font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Migra Light'; /* Distinct name for the Light font */
-  src: url('/fonts/Migra-Extralight.8dd8fa24cfa7bdc1e988b38.9e115b3c42b25d2b1f8af902e68b7b6e.woff2') format('woff2'),
-       url('/fonts/Migra-Extralight.8dd8fa24cfa7bdc1e988b38.9e115b3c42b25d2b1f8af902e68b7b6e.otf') format('opentype');
-  font-weight: normal; /* Let the font file dictate the weight */
+  font-family: 'Migra Light';
+  src: url('assets/fonts/Migra-Extralight.woff2') format('woff2'),
+       url('assets/fonts/Migra-Extralight.otf') format('opentype');
+  font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Proxima Nova';
-  src: url('/fonts/Fontspring-DEMO-proximanova-regular.otf') format('opentype');
+  src: url('assets/fonts/Fontspring-DEMO-proximanova-regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Proxima Nova';
-  src: url('/fonts/Fontspring-DEMO-proximanova-semibold.otf') format('opentype');
+  src: url('assets/fonts/Fontspring-DEMO-proximanova-semibold.otf') format('opentype');
   font-weight: 600;
   font-style: normal;
 }
