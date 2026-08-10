@@ -54,23 +54,23 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
 }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        
-        // Supports local dev as well as all production/preview Vercel domains
-        configuration.setAllowedOriginPatterns(List.of(
-            "http://localhost:4200",
-            "https://*.vercel.app"
-        ));
-        
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
+public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+    // Fix: Use setAllowedOriginPatterns instead of setAllowedOrigins when allowCredentials is true
+    configuration.setAllowedOriginPatterns(List.of(
+        "http://localhost:4200",
+        "https://*.vercel.app"
+    ));
+
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(List.of("*"));
+    configuration.setAllowCredentials(true);
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+}
 
     @Bean
     public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
