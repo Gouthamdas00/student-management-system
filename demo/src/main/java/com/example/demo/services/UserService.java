@@ -29,6 +29,9 @@ public class UserService {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public Users registerUser(RegisterRequestDTO request) {
+        if (userRepo.existsByUsername(request.getUsername())) {
+        throw new RuntimeException("Username '" + request.getUsername() + "' is already taken.");
+        }
         Users user = new Users();
         user.setUsername(request.getUsername());
         user.setPassword(encoder.encode(request.getPassword()));
