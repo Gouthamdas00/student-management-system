@@ -97,7 +97,8 @@
   "src/assets",
   {
     "glob": "**/*",
-    "input": "public"
+    "input": "src/assets/fonts",
+    "output": "/assets/fonts/"
   }
 ],
             "styles": [
