@@ -38,26 +38,29 @@
         </p>
 
         <!-- Student Data Table -->
-        <table *ngIf="!isLoading && students.length > 0" style="width: 100%; border-collapse: collapse;">
-          <thead>
-            <tr style="text-align: left; border-bottom: 2px solid rgba(0,0,0,0.05); color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">
-              <th style="padding-bottom: 1rem;">Roll No</th>
-              <th style="padding-bottom: 1rem;">Student Name</th>
-              <th style="padding-bottom: 1rem;">Marks</th>
-              <th style="padding-bottom: 1rem;">Department</th>
-              <th style="padding-bottom: 1rem;">Semester</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let student of students" style="border-bottom: 1px solid rgba(0,0,0,0.03);">
-              <td style="padding: 1.25rem 0; font-weight: 600; color: var(--text-dark);">{{ student.rollNumber }}</td>
-              <td style="padding: 1.25rem 0; color: var(--text-dark);">{{ student.name }}</td>
-              <td style="padding: 1.25rem 0; color: var(--text-dark);">{{ student.marks }}</td>
-              <td style="padding: 1.25rem 0; color: var(--text-muted);">{{ student.departmentName || 'N/A' }}</td>
-              <td style="padding: 1.25rem 0; color: var(--text-muted);">Semester {{ student.semester }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive" *ngIf="!isLoading && students.length > 0">
+  <table class="student-table">
+    <thead>
+      <tr class="table-header-row">
+        <!-- [NEW ADDITION] Semantic CSS classes replace heavy inline styles -->
+        <th class="col-roll">Roll No</th>
+        <th class="col-name">Student Name</th>
+        <th class="col-marks">Marks</th>
+        <th class="col-dept">Department</th>
+        <th class="col-sem">Semester</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students" class="student-row">
+        <td class="col-roll font-bold text-dark">{{ student.rollNumber }}</td>
+        <td class="col-name text-dark font-medium">{{ student.name }}</td>
+        <td class="col-marks text-dark font-medium">{{ student.marks }}</td>
+        <td class="col-dept text-muted">{{ student.departmentName || 'N/A' }}</td>
+        <td class="col-sem text-muted">Semester {{ student.semester }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
       </div>
     </section>

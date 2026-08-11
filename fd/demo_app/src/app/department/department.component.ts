@@ -39,6 +39,7 @@ export class DepartmentsComponent implements OnInit {
   pageSize: number = 5;
   totalPages: number = 0;
   totalElements: number = 0;
+  currentSort: string = 'default';
 
   Math = Math;
 
@@ -57,7 +58,10 @@ export class DepartmentsComponent implements OnInit {
     this.isLoading = true;
     this.currentPage = page;
 
-    this.dataService.getDepartments(this.currentPage, this.pageSize).subscribe({
+    // ==========================================
+    // [LOCAL HOST & PRODUCTION] Server-Side Paginated & Sorted Fetch
+    // ==========================================
+    this.dataService.getDepartments(this.currentPage, this.pageSize, this.currentSort).subscribe({
       next: (data: any) => {
         if (data && data.content) {
           this.departments = data.content;
@@ -119,12 +123,19 @@ export class DepartmentsComponent implements OnInit {
     const value = (event.target as HTMLSelectElement).value;
 
     if (value === 'name-asc') {
-      this.filteredDepartments.sort((a, b) => a.name.localeCompare(b.name));
+      this.currentSort = 'name,asc';             // Sort A to Z by department name
+    } else if (value === 'name-desc') {
+      this.currentSort = 'name,desc';            // Sort Z to A by department name
     } else if (value === 'students-high') {
-      this.filteredDepartments.sort((a, b) => (b.studentCount || 0) - (a.studentCount || 0));
+      this.currentSort = 'studentCount,desc';    // Sort highest student count first
+    } else if (value === 'students-low') {
+      this.currentSort = 'studentCount,asc';     // Sort lowest student count first
     } else {
-      this.onSearch();
+      this.currentSort = 'default';
     }
+
+    // Reset to page 0 to fetch top sorted records from database
+    this.fetchDepartments(0);
   }
 
   async deleteDepartment(deptOrId: Department | string | number | undefined): Promise<void> {

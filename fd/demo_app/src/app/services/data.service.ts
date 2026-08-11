@@ -16,14 +16,18 @@ export class DataService {
     return this.http.get(`${this.apiUrl}/private/departments`);
   }
 
-  getDepartments(page: number = 0, size: number = 5): Observable<any> {
-    const params = new HttpParams()
+  getDepartments(page: number = 0, size: number = 5, sortBy: string = ''): Observable<any> {
+    let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get(`${this.apiUrl}/private/departments`, { params });
-  }
+    // [NEW ADDITION] Attach sort parameter if selected (e.g., "name,asc" or "name,desc")
+    if (sortBy && sortBy !== 'default') {
+      params = params.set('sort', sortBy);
+    }
 
+    return this.http.get(`${this.apiUrl}/departments`, { params });
+  }
   getDepartmentById(id: number | string): Observable<any> {
     return this.http.get(`${this.apiUrl}/private/departments/${id}`);
   }
@@ -41,12 +45,17 @@ export class DataService {
   }
 
   // --- Student Endpoints ---
-  getStudents(page: number = 0, size: number = 5): Observable<any> {
-    const params = new HttpParams()
+  getStudents(page: number = 0, size: number = 5, sortBy: string = ''): Observable<any> {
+    let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get(`${this.apiUrl}/private/students`, { params });
+    // [NEW ADDITION] Attach sort parameter if selected (e.g., "marks,desc")
+    if (sortBy && sortBy !== 'default') {
+      params = params.set('sort', sortBy);
+    }
+
+    return this.http.get<any>(`${this.apiUrl}/students`, { params });
   }
 
   getStudentById(id: number | string): Observable<any> {

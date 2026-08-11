@@ -1,118 +1,122 @@
+<!-- ==========================================================================
+     [LOCAL HOST & PRODUCTION] Mobile-Optimized Edit Student Record Template
+     ========================================================================== -->
+
 <div class="dashboard-layout">
   <app-sidebar></app-sidebar>
 
   <main class="main-content">
-    <div class="add-student-container" style="padding: 2.5rem; max-width: 800px; margin: 0 auto; font-family: 'Proxima Nova', sans-serif;">
+    <div class="edit-student-container">
       
       <!-- Back Breadcrumb / Header -->
-      <div style="margin-bottom: 2rem;">
-        <a routerLink="/students" style="text-decoration: none; color: #8C6D53; font-size: 0.9rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+      <div class="page-header">
+        <a routerLink="/students" class="back-link">
           ← Back to Student Directory
         </a>
-        <h1 style="font-size: 2.25rem; font-weight: 400; color: #2C221E; margin: 0; font-family: serif;">Edit Student Record</h1>
-        <p style="color: #7A6B63; font-size: 0.95rem; margin-top: 0.25rem;">Update academic details or marks for the enrolled student.</p>
+        <h1 class="page-title">Edit Student Record</h1>
+        <p class="page-subtitle">Update academic details or marks for the enrolled student.</p>
       </div>
 
       <!-- Loading State -->
-      <div *ngIf="isLoading" style="background: #FFFFFF; border-radius: 12px; padding: 3rem; text-align: center; color: #7A6B63;">
+      <div *ngIf="isLoading" class="loading-card">
         Loading student information...
       </div>
 
       <!-- Form Card -->
-      <div *ngIf="!isLoading" class="data-card" style="background: #FFFFFF; border-radius: 12px; padding: 2.5rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); border: 1px solid rgba(0,0,0,0.04);">
+      <div *ngIf="!isLoading" class="data-card">
         
         <!-- Error Banner Pop-up -->
-        <div *ngIf="errorMessage" style="background: #FFF1F0; border: 1px solid #FFCCC7; color: #E5484D; padding: 0.85rem 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; font-weight: 500;">
+        <div *ngIf="errorMessage" class="error-banner">
           ⚠️ {{ errorMessage }}
         </div>
 
         <form (ngSubmit)="onSubmit(studentForm)" #studentForm="ngForm" novalidate>
 
           <!-- Student Name -->
-          <div style="margin-bottom: 1.5rem;">
-            <label style="display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #7A6B63; margin-bottom: 0.5rem; font-weight: 600;">Student Full Name</label>
+          <div class="form-group">
+            <label class="form-label">Student Full Name</label>
             <input 
               type="text" 
               name="name" 
               [(ngModel)]="studentData.name" 
               placeholder="e.g. Rahul Sharma"
-              style="width: 100%; padding: 0.85rem 1rem; border: 1px solid #E2D9D2; border-radius: 8px; font-size: 1rem; background: #FAFAFA; color: #2C221E; outline: none;">
+              class="form-control">
 
-            <span *ngIf="fieldErrors['name']" style="color: #E5484D; font-size: 0.8rem; margin-top: 0.35rem; display: block; font-weight: 500;">
+            <span *ngIf="fieldErrors['name']" class="field-error">
               {{ fieldErrors['name'] }}
             </span>
           </div>
 
           <!-- Department Dropdown -->
-<!-- Department Dropdown -->
-        <div style="margin-bottom: 1.5rem;">
-          <label style="display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #7A6B63; margin-bottom: 0.5rem; font-weight: 600;">Department</label>
-          <select 
-            name="departmentId" 
-            [(ngModel)]="studentData.departmentId" 
-           style="width: 100%; padding: 0.85rem 1rem; border: 1px solid #E2D9D2; border-radius: 8px; font-size: 1rem; background: #FAFAFA; color: #2C221E; outline: none; cursor: pointer;">
-           <option [ngValue]="''" disabled>Select a department</option>
-            <!-- Use [ngValue] instead of [value] -->
-            <option *ngFor="let dept of departments" [ngValue]="dept.id">{{ dept.name }}</option>
-          </select>
-        
-          <span *ngIf="fieldErrors['departmentId']" style="color: #E5484D; font-size: 0.8rem; margin-top: 0.35rem; display: block; font-weight: 500;">
-            {{ fieldErrors['departmentId'] }}
-          </span>
-        </div>
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <select 
+              name="departmentId" 
+              [(ngModel)]="studentData.departmentId" 
+              class="form-control cursor-pointer">
+              <option [ngValue]="''" disabled>Select a department</option>
+              <option *ngFor="let dept of departments" [ngValue]="dept.id">{{ dept.name }}</option>
+            </select>
+          
+            <span *ngIf="fieldErrors['departmentId']" class="field-error">
+              {{ fieldErrors['departmentId'] }}
+            </span>
+          </div>
 
-          <!-- Two-Column Row for Semester and Mark -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;" class="responsive-grid">
+          <!-- [NEW ADDITION] Responsive Two-Column Grid for Semester and Mark -->
+          <div class="responsive-grid">
             
             <!-- Dynamic Semester Input -->
-            <div>
-              <label style="display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #7A6B63; margin-bottom: 0.5rem; font-weight: 600;">
-                Semester (Range: {{ config().minSemester }} - {{ config().maxSemester }})
+            <div class="form-group">
+              <label class="form-label">
+                Semester 
+                <span class="label-range">(Range: {{ config().minSemester }} - {{ config().maxSemester }})</span>
               </label>
               <input 
                 type="number" 
                 name="semester" 
                 [(ngModel)]="studentData.semester" 
                 [placeholder]="'Range: ' + config().minSemester + ' to ' + config().maxSemester"
-                style="width: 100%; padding: 0.85rem 1rem; border: 1px solid #E2D9D2; border-radius: 8px; font-size: 1rem; background: #FAFAFA; color: #2C221E; outline: none;">
+                class="form-control">
 
-              <span *ngIf="fieldErrors['semester']" style="color: #E5484D; font-size: 0.8rem; margin-top: 0.35rem; display: block; font-weight: 500;">
+              <span *ngIf="fieldErrors['semester']" class="field-error">
                 {{ fieldErrors['semester'] }}
               </span>
             </div>
 
             <!-- Dynamic Mark Input -->
-            <div>
-              <label style="display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #7A6B63; margin-bottom: 0.5rem; font-weight: 600;">
-                Marks / Score (Range: {{ config().minMarks }} - {{ config().maxMarks }})
+            <div class="form-group">
+              <label class="form-label">
+                Marks / Score 
+                <span class="label-range">(Range: {{ config().minMarks }} - {{ config().maxMarks }})</span>
               </label>
               <input 
                 type="number" 
                 name="marks" 
                 [(ngModel)]="studentData.marks" 
                 [placeholder]="'Range: ' + config().minMarks + ' to ' + config().maxMarks"
-                style="width: 100%; padding: 0.85rem 1rem; border: 1px solid #E2D9D2; border-radius: 8px; font-size: 1rem; background: #FAFAFA; color: #2C221E; outline: none;">
+                class="form-control">
 
-              <span *ngIf="fieldErrors['marks']" style="color: #E5484D; font-size: 0.8rem; margin-top: 0.35rem; display: block; font-weight: 500;">
+              <span *ngIf="fieldErrors['marks']" class="field-error">
                 {{ fieldErrors['marks'] }}
               </span>
             </div>
 
           </div>
 
-          <!-- Action Buttons Footer -->
-          <div style="display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1.5rem;">
+          <!-- [NEW ADDITION] Responsive Action Buttons Footer -->
+          <div class="form-footer">
             <button 
               type="button" 
               routerLink="/students"
-              style="padding: 0.75rem 1.5rem; border-radius: 8px; border: 1px solid #E2D9D2; background: transparent; color: #7A6B63; font-weight: 600; cursor: pointer; font-size: 0.95rem;">
+              class="btn-cancel">
               Cancel
             </button>
             
             <button 
               type="submit" 
               [disabled]="isSubmitting"
-              style="padding: 0.75rem 2rem; border-radius: 8px; border: none; background: #C27835; color: #FFFFFF; font-weight: 600; cursor: pointer; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(194, 120, 53, 0.25);">
+              class="btn-submit">
               {{ isSubmitting ? 'Updating...' : 'Update Student' }}
             </button>
           </div>

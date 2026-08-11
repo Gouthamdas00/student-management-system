@@ -28,6 +28,7 @@ public interface Studentrepo extends JpaRepository<Students, Long> {
     boolean existsByDepartmentId(@Param("deptId") Long deptId);
 
     List<Students> findAllByOrderByNameAsc();
+    long countByDepartmentId(Long departmentId);
 
     @Modifying
     @Query(value = "UPDATE students SET roll_number = :newRoll WHERE roll_number = :targetRoll", nativeQuery = true)

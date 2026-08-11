@@ -36,6 +36,7 @@ export class StudentsComponent implements OnInit {
   searchTerm: string = '';
   isLoading: boolean = true;
 
+  currentSort: string = 'default';
   // Pagination State
   currentPage: number = 0;
   pageSize: number = 5;
@@ -56,11 +57,15 @@ export class StudentsComponent implements OnInit {
     }
   }
 
+  // [NEW FIX] Passes this.currentSort to dataService so Spring Boot handles full-table sorting
   fetchStudents(page: number = 0): void {
     this.isLoading = true;
     this.currentPage = page;
 
-    this.dataService.getStudents(this.currentPage, this.pageSize).subscribe({
+    // ==========================================
+    // [LOCAL HOST & PRODUCTION] Server-Side Paginated & Sorted Fetch
+    // ==========================================
+    this.dataService.getStudents(this.currentPage, this.pageSize, this.currentSort).subscribe({
       next: (data: any) => {
         if (data && data.content) {
           this.students = data.content;
@@ -109,19 +114,25 @@ export class StudentsComponent implements OnInit {
     );
   }
 
+  // [NEW FIX] Maps dropdown selections to Spring Data Pageable sort query parameters
   onSortChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
 
     if (value === 'high-low') {
-      this.filteredStudents.sort((a, b) => (b.marks || 0) - (a.marks || 0));
+      this.currentSort = 'marks,desc'; // Sort entire DB table by marks descending
     } else if (value === 'low-high') {
-      this.filteredStudents.sort((a, b) => (a.marks || 0) - (b.marks || 0));
+      this.currentSort = 'marks,asc';  // Sort entire DB table by marks ascending
+    } else if (value === 'name-asc') {
+      this.currentSort = 'name,asc';   // Optional: Sort A-Z by student name
     } else {
-      this.onSearch();
+      this.currentSort = 'default';
     }
+
+    // Always restart from page 0 so the top sorted records from DB are retrieved first
+    this.fetchStudents(0);
   }
 
-async deleteStudent(studentOrId: Student | number | string | undefined): Promise<void> {
+  async deleteStudent(studentOrId: Student | number | string | undefined): Promise<void> {
     if (studentOrId === undefined || studentOrId === null) return;
 
     const student = typeof studentOrId === 'object'
@@ -159,7 +170,7 @@ async deleteStudent(studentOrId: Student | number | string | undefined): Promise
     }
   }
 
-async reassignRollNumbers(): Promise<void> {
+  async reassignRollNumbers(): Promise<void> {
     const confirmed = await this.confirmService.confirm({
       title: 'Reassign Roll Numbers?',
       message: 'This will re-index all student roll numbers sequentially (1, 2, 3...) sorted alphabetically by student name. Do you want to proceed?',

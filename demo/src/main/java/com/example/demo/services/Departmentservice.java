@@ -9,13 +9,10 @@ import com.example.demo.model.Department;
 import com.example.demo.repository.Departmentrepo;
 import com.example.demo.repository.Studentrepo;
 
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,13 +22,16 @@ public class Departmentservice {
 
     private final Departmentrepo departmentrepo;
     private final Studentrepo studentrepo;
-    
 
-    Departmentservice(Departmentrepo departmentrepo, Studentrepo studentrepo) {
+    public Departmentservice(Departmentrepo departmentrepo, Studentrepo studentrepo) {
         this.departmentrepo = departmentrepo;
         this.studentrepo = studentrepo;
     }
 
+    // ==========================================
+    // 1. Get Students by Department ID
+    // ==========================================
+    @Transactional(readOnly = true)
     public List<StudentResponseDTO> getDepartmentById(Long id) {
         Department department = departmentrepo.findById(id)
                 .orElseThrow(() -> new DepartmentNotFound("Department not found with id: " + id));
@@ -46,59 +46,100 @@ public class Departmentservice {
                 ))
                 .collect(Collectors.toList());
     }
+
+    // ==========================================
+    // 2. Create Department
+    // ==========================================
+    @Transactional
     public DepartmentResponseDTO createDepartment(DepartmentRequestDTO requestDTO) {
         Department department = DepartmentMapper.mapToEntity(requestDTO);
-        Department saveddepartment = departmentrepo.save(department);
-        return DepartmentMapper.mapToResponseDTO(saveddepartment);
+        Department savedDepartment = departmentrepo.save(department);
+        return convertToDTO(savedDepartment);
     }
-        public DepartmentResponseDTO getDepartment(Long id) {
+
+    // ==========================================
+    // 3. Get Single Department
+    // ==========================================
+    @Transactional(readOnly = true)
+    public DepartmentResponseDTO getDepartment(Long id) {
         Department department = departmentrepo.findById(id)
                 .orElseThrow(() -> new DepartmentNotFound("Department not found with id: " + id));
-        return DepartmentMapper.mapToResponseDTO(department);
+        return convertToDTO(department);
     }
-    @Transactional
+
+    // ==========================================
+    // 4. Get All Departments (Unpaginated)
+    // ==========================================
+    @Transactional(readOnly = true)
     public List<DepartmentResponseDTO> getAllDepartments() {
-        return departmentrepo.findAll(Sort.by(Sort.Direction.ASC, "id"))
+        return departmentrepo.findAll()
                 .stream()
-                .map(DepartmentMapper::mapToResponseDTO)
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-    private DepartmentResponseDTO convertToDTO(Department department) {
-        DepartmentResponseDTO dto = new DepartmentResponseDTO();
-        dto.setId(department.getId());
-        dto.setName(department.getName());
-        // Map any other fields your DepartmentResponseDTO has (e.g., code, description, etc.)
-        return dto;
+
+    // ==========================================
+    // 5. Get Paginated Departments
+    // ==========================================
+    @Transactional(readOnly = true)
+    public Page<DepartmentResponseDTO> getPaginatedDepartments(Pageable pageable) {
+        return departmentrepo.findAll(pageable)
+                .map(this::convertToDTO);
     }
-    public List<DepartmentResponseDTO> getStudentCount() {
-        return departmentrepo.findAllWithStudentCount();
-    }
+
+    // ==========================================
+    // 6. Update Department
+    // ==========================================
     @Transactional
     public DepartmentResponseDTO updateDepartment(Long id, DepartmentRequestDTO requestDTO) {
         Department department = departmentrepo.findById(id)
-            .orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
+            .orElseThrow(() -> new DepartmentNotFound("Department not found with id: " + id));
 
         department.setName(requestDTO.getName());
         department.setHeadOfDepartment(requestDTO.getHeadOfDepartment());
 
         Department savedDepartment = departmentrepo.save(department);
-        return DepartmentMapper.mapToResponseDTO(savedDepartment);
-}
-    public Page<DepartmentResponseDTO> getPaginatedDepartments(int page, int size) {
-    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id"));
-    return departmentrepo.findAll(pageable)
-            .map(DepartmentMapper::mapToResponseDTO);
-}
-    @Transactional
-public void deleteDepartment(Long id) {
-    Department department = departmentrepo.findById(id)
-            .orElseThrow(() -> new RuntimeException("Department not found with ID: " + id));
-
-    // Check if students exist in this department
-    if (studentrepo.existsByDepartmentId(id)) {
-        throw new RuntimeException("Cannot delete department with active students assigned.");
+        return convertToDTO(savedDepartment);
     }
 
-    departmentrepo.delete(department);
-}
+    // ==========================================
+    // 7. Delete Department
+    // ==========================================
+    @Transactional
+    public void deleteDepartment(Long id) {
+        Department department = departmentrepo.findById(id)
+                .orElseThrow(() -> new DepartmentNotFound("Department not found with ID: " + id));
+
+        // Prevent deletion if active students exist
+        if (studentrepo.existsByDepartmentId(id)) {
+            throw new IllegalStateException("Cannot delete department with active students assigned.");
+        }
+
+        departmentrepo.delete(department);
+    }
+
+    // ==========================================
+    // Helper: Convert Entity -> DTO with Student Count
+    // ==========================================
+    public DepartmentResponseDTO convertToDTO(Department department) {
+        DepartmentResponseDTO dto = new DepartmentResponseDTO();
+        dto.setId(department.getId());
+        dto.setName(department.getName());
+        dto.setHeadOfDepartment(department.getHeadOfDepartment());
+
+        // [NEW FIX] Calculate and map total student count dynamically for Angular
+        if (department.getStudents() != null && !department.getStudents().isEmpty()) {
+            dto.setStudentCount(department.getStudents().size());
+        } else if (department.getId() != null) {
+            dto.setStudentCount((int) studentrepo.countByDepartmentId(department.getId()));
+        } else {
+            dto.setStudentCount(0);
+        }
+
+        return dto;
+    }
+
+    public List<DepartmentResponseDTO> getStudentCount() {
+        return departmentrepo.findAllWithStudentCount();
+    }
 }

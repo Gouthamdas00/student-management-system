@@ -177,3 +177,122 @@ body {
     box-sizing: border-box;
   }
 }
+@media (max-width: 768px) {
+
+  /* ------------------------------------------------------------------------
+     1. GLOBAL TYPOGRAPHY & CONTAINER PADDING SCALING
+     ------------------------------------------------------------------------ */
+  /* [NEW ADDITION] Scale down large titles on mobile screens */
+  h1 {
+    font-size: 1.65rem !important;
+    line-height: 1.25 !important;
+  }
+
+  /* [NEW ADDITION] Reduce card & page padding on narrow devices */
+  .add-department-container,
+  .departments-page-container,
+  .staff-page-container,
+  .dashboard-layout main {
+    padding: 1rem !important;
+  }
+
+  .data-card {
+    padding: 1.25rem !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     2. TABLE HORIZONTAL SCROLLING FIX
+     ------------------------------------------------------------------------ */
+  /* [NEW ADDITION] Force tables to scroll cleanly inside cards without breaking page width */
+  .table-responsive {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    display: block !important;
+    margin-bottom: 1rem;
+  }
+
+  .table-responsive table {
+    min-width: 600px !important; /* Ensures columns stay readable during scroll */
+  }
+
+  /* Prevent squeezed table headers */
+  th, td {
+    white-space: nowrap !important;
+    padding: 0.75rem 0.5rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Allow long text (like department names) to wrap nicely */
+  td.wrap-text, 
+  td:nth-child(2) {
+    white-space: normal !important;
+    min-width: 140px;
+  }
+
+  /* ------------------------------------------------------------------------
+     3. HEADER TOOLBARS & ACTION BUTTON RE-STACKING
+     ------------------------------------------------------------------------ */
+  /* [NEW ADDITION] Convert row flex headers into stacked vertical layouts */
+  div[style*="display: flex; justify-content: space-between;"],
+  .header-section > div {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+  }
+
+  /* Stretch action button groups to full mobile width */
+  div[style*="display: flex; gap: 0.75rem;"],
+  div[style*="display: flex; gap: 1rem;"] {
+    flex-wrap: wrap !important;
+    width: 100% !important;
+  }
+
+  div[style*="display: flex; gap: 0.75rem;"] button,
+  div[style*="display: flex; gap: 0.75rem;"] a,
+  div[style*="display: flex; gap: 1rem;"] button,
+  div[style*="display: flex; gap: 1rem;"] a {
+    flex: 1 1 100% !important; /* Stack full width on mobile */
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     4. SEARCH TOOLBAR & FILTER DROPDOWNS
+     ------------------------------------------------------------------------ */
+  /* [NEW ADDITION] Stack search inputs and filter selects vertically */
+  div[style*="display: flex; gap: 1rem; margin-bottom: 1.5rem;"] {
+    flex-direction: column !important;
+  }
+
+  div[style*="width: 220px;"] {
+    width: 100% !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     5. FORM ACTION BUTTON OVERFLOW FIX (System Settings & Edit Forms)
+     ------------------------------------------------------------------------ */
+  /* [NEW ADDITION] Stack form footer buttons vertically on small screens */
+  div[style*="justify-content: flex-end; gap: 1rem;"] {
+    flex-direction: column-reverse !important;
+    gap: 0.75rem !important;
+  }
+
+  div[style*="justify-content: flex-end; gap: 1rem;"] button {
+    width: 100% !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     6. HERO SECTION LANDING PAGE RESPONSIVENESS
+     ------------------------------------------------------------------------ */
+  /* [NEW ADDITION] Prevent large hero text from colliding with graphics */
+  .hero-title,
+  h1[style*="font-size: 2.25rem"] {
+    font-size: 1.75rem !important;
+  }
+
+  .hero-container {
+    padding-top: 2rem !important;
+    background-size: contain !important;
+  }
+}

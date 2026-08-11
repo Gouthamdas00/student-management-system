@@ -1,0 +1,142 @@
+/* ==========================================================================
+   [LOCAL HOST & PRODUCTION] Student Form Base & Mobile Responsive Styles
+   ========================================================================== */
+
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #7A6B63;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.label-range {
+  text-transform: none;
+  font-weight: 500;
+  color: #9A8A81;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #E2D9D2;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #FAFAFA;
+  color: #2C221E;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.form-select {
+  cursor: pointer;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: #C27835;
+}
+
+.field-error {
+  color: #E5484D;
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+  display: block;
+  font-weight: 500;
+}
+
+/* Desktop Grid Layout */
+.two-column-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Desktop Footer Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: 1.5rem;
+}
+
+.btn-cancel {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #E2D9D2;
+  background: transparent;
+  color: #7A6B63;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn-submit {
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  border: none;
+  background: #C27835;
+  color: #FFFFFF;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(194, 120, 53, 0.25);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   [NEW ADDITION] Mobile Viewport Responsiveness (< 768px)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* [NEW ADDITION] Stack grid columns vertically on mobile screens */
+  .two-column-row {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    margin-bottom: 1rem;
+  }
+
+  /* Compact label scaling prevents overlapping text */
+  .form-label {
+    font-size: 0.78rem !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .label-range {
+    display: inline-block;
+    font-size: 0.75rem;
+  }
+
+  .form-input,
+  .form-select {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.95rem;
+  }
+
+  /* [NEW ADDITION] Stack action buttons vertically on mobile viewports */
+  .form-actions {
+    flex-direction: column-reverse !important;
+    gap: 0.75rem !important;
+  }
+
+  .btn-cancel,
+  .btn-submit {
+    width: 100% !important;
+    text-align: center;
+    padding: 0.85rem !important;
+  }
+}

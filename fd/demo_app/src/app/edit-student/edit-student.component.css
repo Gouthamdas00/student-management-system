@@ -1,0 +1,213 @@
+/* ==========================================================================
+   [LOCAL HOST & PRODUCTION] Edit Student Record Base & Responsive Styles
+   ========================================================================== */
+
+.edit-student-container {
+  padding: 2.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Proxima Nova', sans-serif;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.back-link {
+  text-decoration: none;
+  color: #8C6D53;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.page-title {
+  font-size: 2.25rem;
+  font-weight: 400;
+  color: #2C221E;
+  margin: 0;
+  font-family: serif;
+}
+
+.page-subtitle {
+  color: #7A6B63;
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+}
+
+.loading-card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  color: #7A6B63;
+}
+
+.data-card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.error-banner {
+  background: #FFF1F0;
+  border: 1px solid #FFCCC7;
+  color: #E5484D;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #7A6B63;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.label-range {
+  text-transform: none;
+  font-weight: 500;
+  color: #9A8A81;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #E2D9D2;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #FAFAFA;
+  color: #2C221E;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: #C27835;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.field-error {
+  color: #E5484D;
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+  display: block;
+  font-weight: 500;
+}
+
+/* Two-Column Desktop Grid */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Desktop Footer Actions */
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: 1.5rem;
+}
+
+.btn-cancel {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #E2D9D2;
+  background: transparent;
+  color: #7A6B63;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn-submit {
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  border: none;
+  background: #C27835;
+  color: #FFFFFF;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(194, 120, 53, 0.25);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   [NEW ADDITION] Mobile Viewport Overrides (< 768px)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .edit-student-container {
+    padding: 1rem !important;
+  }
+
+  .data-card {
+    padding: 1.25rem !important;
+  }
+
+  .page-title {
+    font-size: 1.65rem !important;
+  }
+
+  /* [NEW ADDITION] Force two-column grid into single column on mobile */
+  .responsive-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.78rem !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .label-range {
+    display: inline-block;
+    font-size: 0.75rem;
+  }
+
+  .form-control {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.95rem;
+  }
+
+  /* [NEW ADDITION] Stack buttons vertically full width on small screens */
+  .form-footer {
+    flex-direction: column-reverse !important;
+    gap: 0.75rem !important;
+  }
+
+  .btn-cancel,
+  .btn-submit {
+    width: 100% !important;
+    text-align: center;
+    padding: 0.85rem !important;
+  }
+}

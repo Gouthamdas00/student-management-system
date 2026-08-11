@@ -196,3 +196,66 @@
   color: #FFFFFF;
   font-weight: 600;
 }
+
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-header-row {
+  text-align: left;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  color: var(--text-muted, #7A6B63);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.table-header-row th {
+  padding-bottom: 1rem;
+}
+
+.student-row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  transition: background 0.15s ease;
+}
+
+.student-row:hover {
+  background-color: #FAFAFA;
+}
+
+.student-row td {
+  padding: 1.25rem 0;
+}
+
+/* Color & Typography Helpers */
+.text-dark { color: var(--text-dark, #2C221E); }
+.text-muted { color: var(--text-muted, #7A6B63); }
+.font-bold { font-weight: 600; }
+.font-medium { font-weight: 500; }
+
+/* ==========================================================================
+   [NEW ADDITION] Mobile Viewport Responsiveness (< 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .student-table {
+    min-width: 580px; /* Prevents columns from squeezing below readability threshold */
+  }
+
+  .student-row td {
+    padding: 0.85rem 0;
+    font-size: 0.9rem;
+  }
+
+  .col-name,
+  .col-dept {
+    min-width: 130px;
+    white-space: normal; /* Allows long student/department names to wrap cleanly */
+  }
+}

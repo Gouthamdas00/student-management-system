@@ -7,7 +7,9 @@ import com.example.demo.services.Departmentservice;
 
 import jakarta.validation.Valid;
 
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,16 +29,28 @@ public class Departmentcontroller {
     // ADDED: Fetch all departments
     @GetMapping
     public ResponseEntity<?> getAllDepartments(
-        @RequestParam(required = false) Integer page,
-        @RequestParam(required = false) Integer size) {
-    
-    // If page & size parameters are supplied by Angular, return Paginated Page object
-    if (page != null && size != null) {
-        return ResponseEntity.ok(departmentservice.getPaginatedDepartments(page, size));
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false, defaultValue = "id,asc") String sort) {
+
+        // If page & size parameters are supplied by Angular, return Paginated & Sorted Page object
+        if (page != null && size != null) {
+
+            // [NEW FIX] Parse "name,asc" or "studentCount,desc" sent from Angular
+            String[] sortParts = sort.split(",");
+            String sortProperty = sortParts[0];
+            Sort.Direction direction = (sortParts.length > 1 && sortParts[1].equalsIgnoreCase("desc"))
+                    ? Sort.Direction.DESC
+                    : Sort.Direction.ASC;
+
+            Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortProperty));
+
+            return ResponseEntity.ok(departmentservice.getPaginatedDepartments(pageable));
+        }
+
+        // Unpaginated fallback (for dropdowns / summaries)
+        return ResponseEntity.ok(departmentservice.getAllDepartments());
     }
-    
-    return ResponseEntity.ok(departmentservice.getAllDepartments());
-}
 
     @GetMapping("/{id}/students")
     public ResponseEntity<List<StudentResponseDTO>> getStudentsByDepartment(@PathVariable Long id) {

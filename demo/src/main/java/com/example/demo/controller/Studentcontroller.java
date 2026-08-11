@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,10 +32,7 @@ public class Studentcontroller {
     // GET /private/students?page=0&size=10&sortBy=rollNumber
     @GetMapping
     public ResponseEntity<Page<StudentResponseDTO>> getAllStudents(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "rollNumber") String sortBy) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));      
+            @PageableDefault(page = 0, size = 5, sort = "rollNumber", direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.ok(students.getAllStudents(pageable));
     }
 

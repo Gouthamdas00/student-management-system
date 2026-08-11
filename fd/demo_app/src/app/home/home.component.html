@@ -1,9 +1,14 @@
-<div class="landing-page">
-  <!-- Giant Background Star Graphic -->
- <img src="/STAR.png" alt="Decorative Star" class="bg-star" />
+<!-- ==========================================================================
+     [LOCAL HOST & PRODUCTION] Mobile Landing Page (Canva Page 4 Target Mockup)
+     ========================================================================== -->
 
-  <!-- Navbar -->
-  <nav class="navbar">
+<div class="landing-page">
+  <!-- Top Star Background Graphic -->
+  <!-- [NEW ADDITION] Pinned to top center for mobile viewport -->
+  <img src="/STAR.png" alt="Decorative Star" class="bg-star" />
+
+  <!-- Navbar / Header (Hidden on Mobile, visible on Desktop) -->
+  <nav class="navbar desktop-only">
     <div class="logo">STUDENT NOW</div>
     <div class="nav-links">
       <button class="btn btn-text" routerLink="/login">Login</button>
@@ -11,12 +16,20 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- Hero Content -->
   <main class="hero">
+    <!-- [NEW ADDITION] Mobile-only centered logo beneath the top star -->
+    <div class="logo mobile-only">STUDENT NOW</div>
+
     <div class="hero-content">
       <h1 class="display-title">Manage Student<br>Data with Ease</h1>
-      <p class="subtitle">A fast, secure, and intuitive portal for student records.</p>
-      <button class="btn btn-solid btn-large" routerLink="/register">Get Started</button>
+      <p class="subtitle">A fast, secure, and intuitive portal<br>for student records.</p>
+      
+      <!-- [NEW ADDITION] Stacked action buttons matching Canva mockup -->
+      <div class="action-stack">
+        <button class="btn btn-solid btn-pill" routerLink="/register">Get Started</button>
+        <button class="btn btn-outline btn-pill" routerLink="/login">Login</button>
+      </div>
     </div>
   </main>
 </div>
