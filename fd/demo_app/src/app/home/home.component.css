@@ -1,5 +1,5 @@
 /* ==========================================================================
-   [LOCAL HOST & PRODUCTION] Base Desktop Styles
+   1. BASE DESKTOP STYLES
    ========================================================================== */
 
 .landing-page {
@@ -17,7 +17,7 @@
 .desktop-only { display: flex; }
 .mobile-only { display: none; }
 
-/* Desktop Navbar */
+/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -29,14 +29,16 @@
   z-index: 10;
 }
 
-.logo {
-  font-family: var(--font-display-light, 'Migra Light', serif);
+.logo,
+.brand-logo {
+  font-family: var(--font-display-light, 'Migra Light', serif) !important;
+  font-weight: 300 !important;
   font-size: 1.6rem;
   color: #2C221E;
   letter-spacing: 1px;
 }
 
-/* Desktop Hero */
+/* Hero Section */
 .hero {
   flex: 1;
   display: flex;
@@ -48,22 +50,33 @@
   z-index: 10;
 }
 
-.display-title {
-  font-family: var(--font-display-light, 'Migra Light', serif);
-  font-size: 5.5rem;
-  line-height: 1.05;
-  margin-bottom: 1.5rem;
-  color: #2C221E;
-  font-weight: normal;
+.hero-content {
+  max-width: 650px;
 }
 
-.subtitle {
+/* Enforce Migra Light Non-Bold Title (PC View) */
+.display-title,
+.hero-title,
+h1 {
+  font-family: var(--font-display-light, 'Migra Light', serif) !important;
+  font-weight: 300 !important;
+  font-size: 4.5rem;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  color: #2C221E !important;
+  text-align: left;
+}
+
+.subtitle,
+.hero-subtitle,
+p {
   font-family: var(--font-body, 'Proxima Nova', sans-serif);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: #7A6B63;
   margin-bottom: 2.5rem;
   max-width: 80%;
   font-weight: 400;
+  line-height: 1.5;
 }
 
 .bg-star {
@@ -77,8 +90,39 @@
   pointer-events: none;
 }
 
+/* Buttons */
+.btn-pill,
+.btn {
+  font-family: var(--font-body, 'Proxima Nova', sans-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.85rem 2rem;
+  border-radius: 12px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-solid {
+  background-color: #C27835;
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 4px 12px rgba(194, 120, 53, 0.2);
+}
+
+.btn-solid:hover {
+  background-color: #a86328;
+}
+
+.btn-outline {
+  background-color: #FFFFFF;
+  color: #2C221E;
+  border: 1.5px solid #C27835;
+}
+
 /* ==========================================================================
-   [NEW ADDITION] Mobile Viewport Styles (< 768px) - Matches Image 2 Mockup
+   2. MOBILE VIEWPORT STYLES (< 768px)
    ========================================================================== */
 
 @media (max-width: 768px) {
@@ -86,32 +130,34 @@
   .mobile-only { display: block !important; }
 
   .landing-page {
-    background-color: #F9F6F0; /* Clean white canvas matching Canva mockup */
-    padding: 0 1.5rem 2.5rem 1.5rem;
+    padding: 1.5rem 1.25rem 2.5rem 1.25rem;
     align-items: center;
     justify-content: space-between;
     text-align: center;
   }
 
-  /* [NEW ADDITION] Top Star position peeking down from header */
+  /* Peeking background star illustration */
   .bg-star {
-    top: -35%;
+    top: -15%;
     left: 50%;
     right: auto;
     transform: translateX(-50%);
-    width: 150%;
+    width: 130%;
     height: auto;
     max-width: none;
+    opacity: 0.9;
   }
 
-  /* [NEW ADDITION] Centered logo positioned under top star */
-  .logo.mobile-only {
-    font-size: 2rem;
-    margin-top: 250px; /* Pushes logo below the star graphics */
-    margin-bottom: 0rem;
-    text-align: center;
+  /* Centered Header Logo */
+  .logo.mobile-only,
+  .brand-logo {
+    font-size: 1.3rem !important;
+    margin-top: 100px; /* Positions logo cleanly under top graphic */
+    margin-bottom: 1.5rem !important;
+    text-align: center !important;
     position: relative;
     z-index: 10;
+    letter-spacing: 2px;
   }
 
   .hero {
@@ -124,129 +170,56 @@
 
   .hero-content {
     width: 100% !important;
-    max-width: 360px !important; /* Increased max-width to give large text room */
+    max-width: 340px !important;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .display-title {
-    font-size: 3.5rem !important; /* Bumped up significantly */
-    line-height: 1.05 !important;
+  /* Enforce Non-Bold Title (Mobile Phone View) */
+  .display-title,
+  .hero-title,
+  h1 {
+    font-family: var(--font-display-light, 'Migra Light', serif) !important;
+    font-weight: 300 !important;
+    font-size: 2.25rem !important;
+    line-height: 1.15 !important;
     text-align: center !important;
     margin-bottom: 1rem !important;
     color: #2C221E !important;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.2px;
   }
 
-
-
-  .subtitle {
-    font-size: 1.1rem;
-    text-align: center;
-    margin-bottom: 2.25rem;
-    max-width: 100%;
-    color: #2C221E;
-    line-height: 1.4;
-  }
-
-  /* [NEW ADDITION] Stacked centered action buttons */
-  .action-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-    max-width: 240px;
-  }
-
-  .btn-pill {
-    width: 100%;
-    padding: 0.75rem 1.5rem;
-    border-radius: 12px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    box-sizing: border-box;
-    text-align: center;
-  }
-
-  .btn-solid {
-    background-color: #C27835;
-    color: #FFFFFF;
-    border: none;
-    box-shadow: 0 4px 12px rgba(194, 120, 53, 0.2);
-  }
-
-  .btn-outline {
-    background-color: #FFFFFF;
-    color: #2C221E;
-    border: 1.5px solid #C27835;
-  }
-}
-.hero-title,
-h1 {
-  font-family: var(--font-display-light) !important; /* Uses Migra Light instead of Migra Bold */
-  font-weight: 300 !important;                       /* Ensures light / regular weight */
-  font-size: 3.25rem;
-  line-height: 1.15;
-  color: var(--text-dark);
-  text-align: center;
-}
-
-/* Mobile Media Query (Phone View) */
-@media (max-width: 768px) {
-
-  /* Contain background illustration on small screens */
-  .hero-section,
-  .landing-container {
-    background-size: 280px auto !important;
-    background-position: center 5% !important;
-    padding-top: 1.5rem !important;
-  }
-
-  /* Keep non-bold light font on phone view */
-  .hero-title,
-  h1 {
-    font-family: var(--font-display-light) !important;
-    font-weight: 300 !important;
-    font-size: 2rem !important;
-    line-height: 1.15 !important;
-    max-width: 320px !important;
-    margin: 0 auto 1rem auto !important;
-    text-align: center !important;
-  }
-
-  .brand-logo,
-  .header-logo {
-    font-size: 1.1rem !important;
-    margin-bottom: 2rem !important;
-    letter-spacing: 2px !important;
-    position: relative;
-    z-index: 10;
-  }
-
+  .subtitle,
   .hero-subtitle,
   p {
     font-size: 0.95rem !important;
-    max-width: 280px !important;
+    text-align: center !important;
     margin: 0 auto 2rem auto !important;
-    color: var(--text-muted) !important;
+    max-width: 280px !important;
+    color: #6B6863 !important;
+    line-height: 1.4 !important;
   }
 
+  /* Stacked Mobile Action Buttons */
+  .action-stack,
   .hero-actions,
   .button-group {
     display: flex !important;
     flex-direction: column !important;
     gap: 0.75rem !important;
     width: 100% !important;
-    max-width: 300px !important;
+    max-width: 260px !important;
     margin: 0 auto !important;
   }
 
+  .btn-pill,
   .btn-solid,
   .btn-outline,
   .btn-text {
     width: 100% !important;
     text-align: center !important;
     padding: 0.85rem !important;
+    box-sizing: border-box;
   }
 }
