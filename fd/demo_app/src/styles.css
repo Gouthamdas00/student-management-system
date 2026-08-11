@@ -1,32 +1,44 @@
+/* ==========================================================================
+   1. CUSTOM FONT DECLARATIONS
+   ========================================================================== */
+
 @font-face {
   font-family: 'Migra Bold';
-  src: url('/assets/fonts/Migra-Extrabold.woff2') format('woff2'),
-       url('/assets/fonts/Migra-Extrabold.otf') format('opentype');
-  font-weight: normal;
+  src: url('assets/fonts/Migra-Extrabold.woff2') format('woff2'),
+       url('assets/fonts/Migra-Extrabold.otf') format('opentype');
+  font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Migra Light';
-  src: url('/assets/fonts/Migra-Extralight.woff2') format('woff2'),
-       url('/assets/fonts/Migra-Extralight.otf') format('opentype');
-  font-weight: normal;
+  src: url('assets/fonts/Migra-Extralight.woff2') format('woff2'),
+       url('assets/fonts/Migra-Extralight.otf') format('opentype');
+  font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Proxima Nova';
-  src: url('/assets/fonts/Fontspring-DEMO-proximanova-regular.otf') format('opentype');
+  src: url('assets/fonts/Fontspring-DEMO-proximanova-regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Proxima Nova';
-  src: url('/assets/fonts/Fontspring-DEMO-proximanova-semibold.otf') format('opentype');
+  src: url('assets/fonts/Fontspring-DEMO-proximanova-semibold.otf') format('opentype');
   font-weight: 600;
   font-style: normal;
+  font-display: swap;
 }
+
+/* ==========================================================================
+   2. DESIGN SYSTEM TOKENS
+   ========================================================================== */
 
 :root {
   --bg-beige: #F9F6F0;
@@ -35,11 +47,15 @@
   --text-dark: #2A2825;
   --text-muted: #6B6863;
   
-  /* Apply the distinct font names here */
-  --font-display-bold: 'Migra Bold', serif;
-  --font-display-light: 'Migra Light', serif;
-  --font-body: 'Proxima Nova', sans-serif;
+  /* Font Families with Google Font Fallbacks */
+  --font-display-bold: 'Migra Bold', 'Instrument Serif', Georgia, serif;
+  --font-display-light: 'Migra Light', 'Instrument Serif', Georgia, serif;
+  --font-body: 'Proxima Nova', 'Plus Jakarta Sans', -apple-system, sans-serif;
 }
+
+/* ==========================================================================
+   3. GLOBAL BASE STYLES & TYPOGRAPHY MAPPINGS
+   ========================================================================== */
 
 * {
   box-sizing: border-box;
@@ -52,8 +68,20 @@ body {
   color: var(--text-dark);
   font-family: var(--font-body);
   line-height: 1.6;
-  /* This prevents horizontal scrolling from the star, but allows normal vertical scrolling */
   overflow-x: hidden; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Explicit Heading Assignments (Fixes Times New Roman Fallback) */
+h1, h2, h3, h4, .page-title, .brand-logo {
+  font-family: var(--font-display-bold) !important;
+  font-weight: normal;
+  color: var(--text-dark);
+}
+
+.title-light, .page-subtitle {
+  font-family: var(--font-display-light);
 }
 
 /* Global Button Styles */
@@ -90,22 +118,10 @@ body {
   color: var(--brand-orange);
 }
 
-/* Layout Wrapper */
-.dashboard-layout {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  background-color: #F8F5F0; /* Warm beige page background */
-}
+/* ==========================================================================
+   4. LAYOUT & RESPONSIVE STYLES
+   ========================================================================== */
 
-/* Main Content Area */
-.main-content {
-  flex: 1;
-  padding: 2.5rem 4rem;
-  overflow-y: auto;
-}
-
-/* Shared Responsive Layout */
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
@@ -120,7 +136,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Responsive Table Wrapper */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -128,10 +143,10 @@ body {
 }
 
 .table-responsive table {
-  min-width: 600px; /* Prevents text squeezing on narrow screens */
+  min-width: 600px;
 }
 
-/* Tablet & Mobile Media Queries */
+/* Media Queries */
 @media (max-width: 992px) {
   .main-content {
     padding: 2rem 1.5rem;
@@ -147,48 +162,11 @@ body {
     padding: 1.25rem 1rem !important;
   }
 
-  /* Force 2-column form grids to single column */
-  .responsive-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Force header toolbars & search bars to stack */
-  .responsive-toolbar {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 1rem !important;
-  }
-
-  .responsive-toolbar > div {
-    width: 100% !important;
-  }
-
-  /* Header action row stacking */
-  .responsive-header {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 1rem !important;
-  }
-
-  .responsive-header a, 
-  .responsive-header button {
-    width: 100%;
-    justify-content: center;
-    box-sizing: border-box;
-  }
-}
-@media (max-width: 768px) {
-
-  /* ------------------------------------------------------------------------
-     1. GLOBAL TYPOGRAPHY & CONTAINER PADDING SCALING
-     ------------------------------------------------------------------------ */
-  /* [NEW ADDITION] Scale down large titles on mobile screens */
   h1 {
     font-size: 1.65rem !important;
     line-height: 1.25 !important;
   }
 
-  /* [NEW ADDITION] Reduce card & page padding on narrow devices */
   .add-department-container,
   .departments-page-container,
   .staff-page-container,
@@ -200,10 +178,6 @@ body {
     padding: 1.25rem !important;
   }
 
-  /* ------------------------------------------------------------------------
-     2. TABLE HORIZONTAL SCROLLING FIX
-     ------------------------------------------------------------------------ */
-  /* [NEW ADDITION] Force tables to scroll cleanly inside cards without breaking page width */
   .table-responsive {
     width: 100% !important;
     overflow-x: auto !important;
@@ -213,86 +187,45 @@ body {
   }
 
   .table-responsive table {
-    min-width: 600px !important; /* Ensures columns stay readable during scroll */
+    min-width: 600px !important;
   }
 
-  /* Prevent squeezed table headers */
   th, td {
     white-space: nowrap !important;
     padding: 0.75rem 0.5rem !important;
     font-size: 0.85rem !important;
   }
 
-  /* Allow long text (like department names) to wrap nicely */
   td.wrap-text, 
   td:nth-child(2) {
     white-space: normal !important;
     min-width: 140px;
   }
 
-  /* ------------------------------------------------------------------------
-     3. HEADER TOOLBARS & ACTION BUTTON RE-STACKING
-     ------------------------------------------------------------------------ */
-  /* [NEW ADDITION] Convert row flex headers into stacked vertical layouts */
-  div[style*="display: flex; justify-content: space-between;"],
-  .header-section > div {
+  .responsive-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .responsive-toolbar {
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 1rem !important;
   }
 
-  /* Stretch action button groups to full mobile width */
-  div[style*="display: flex; gap: 0.75rem;"],
-  div[style*="display: flex; gap: 1rem;"] {
-    flex-wrap: wrap !important;
+  .responsive-toolbar > div {
     width: 100% !important;
   }
 
-  div[style*="display: flex; gap: 0.75rem;"] button,
-  div[style*="display: flex; gap: 0.75rem;"] a,
-  div[style*="display: flex; gap: 1rem;"] button,
-  div[style*="display: flex; gap: 1rem;"] a {
-    flex: 1 1 100% !important; /* Stack full width on mobile */
-    text-align: center !important;
-    justify-content: center !important;
-  }
-
-  /* ------------------------------------------------------------------------
-     4. SEARCH TOOLBAR & FILTER DROPDOWNS
-     ------------------------------------------------------------------------ */
-  /* [NEW ADDITION] Stack search inputs and filter selects vertically */
-  div[style*="display: flex; gap: 1rem; margin-bottom: 1.5rem;"] {
+  .responsive-header {
     flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
   }
 
-  div[style*="width: 220px;"] {
-    width: 100% !important;
-  }
-
-  /* ------------------------------------------------------------------------
-     5. FORM ACTION BUTTON OVERFLOW FIX (System Settings & Edit Forms)
-     ------------------------------------------------------------------------ */
-  /* [NEW ADDITION] Stack form footer buttons vertically on small screens */
-  div[style*="justify-content: flex-end; gap: 1rem;"] {
-    flex-direction: column-reverse !important;
-    gap: 0.75rem !important;
-  }
-
-  div[style*="justify-content: flex-end; gap: 1rem;"] button {
-    width: 100% !important;
-  }
-
-  /* ------------------------------------------------------------------------
-     6. HERO SECTION LANDING PAGE RESPONSIVENESS
-     ------------------------------------------------------------------------ */
-  /* [NEW ADDITION] Prevent large hero text from colliding with graphics */
-  .hero-title,
-  h1[style*="font-size: 2.25rem"] {
-    font-size: 1.75rem !important;
-  }
-
-  .hero-container {
-    padding-top: 2rem !important;
-    background-size: contain !important;
+  .responsive-header a, 
+  .responsive-header button {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
   }
 }
