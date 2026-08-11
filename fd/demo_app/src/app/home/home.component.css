@@ -182,3 +182,71 @@
     border: 1.5px solid #C27835;
   }
 }
+.hero-title,
+h1 {
+  font-family: var(--font-display-light) !important; /* Uses Migra Light instead of Migra Bold */
+  font-weight: 300 !important;                       /* Ensures light / regular weight */
+  font-size: 3.25rem;
+  line-height: 1.15;
+  color: var(--text-dark);
+  text-align: center;
+}
+
+/* Mobile Media Query (Phone View) */
+@media (max-width: 768px) {
+
+  /* Contain background illustration on small screens */
+  .hero-section,
+  .landing-container {
+    background-size: 280px auto !important;
+    background-position: center 5% !important;
+    padding-top: 1.5rem !important;
+  }
+
+  /* Keep non-bold light font on phone view */
+  .hero-title,
+  h1 {
+    font-family: var(--font-display-light) !important;
+    font-weight: 300 !important;
+    font-size: 2rem !important;
+    line-height: 1.15 !important;
+    max-width: 320px !important;
+    margin: 0 auto 1rem auto !important;
+    text-align: center !important;
+  }
+
+  .brand-logo,
+  .header-logo {
+    font-size: 1.1rem !important;
+    margin-bottom: 2rem !important;
+    letter-spacing: 2px !important;
+    position: relative;
+    z-index: 10;
+  }
+
+  .hero-subtitle,
+  p {
+    font-size: 0.95rem !important;
+    max-width: 280px !important;
+    margin: 0 auto 2rem auto !important;
+    color: var(--text-muted) !important;
+  }
+
+  .hero-actions,
+  .button-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+    max-width: 300px !important;
+    margin: 0 auto !important;
+  }
+
+  .btn-solid,
+  .btn-outline,
+  .btn-text {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 0.85rem !important;
+  }
+}
