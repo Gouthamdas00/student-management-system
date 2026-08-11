@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
-  apiUrl: 'https://student-management-system-c3g8.onrender.com'
+  production: false,
+  apiUrl: 'https://student-management-system-c3g8.onrender.com' // or 'http://localhost:8080' if testing backend locally
 };
