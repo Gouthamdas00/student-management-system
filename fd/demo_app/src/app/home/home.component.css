@@ -17,7 +17,7 @@
 .desktop-only { display: flex; }
 .mobile-only { display: none; }
 
-/* Navbar */
+/* Desktop Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -38,7 +38,7 @@
   letter-spacing: 1px;
 }
 
-/* Hero Section */
+/* Desktop Hero */
 .hero {
   flex: 1;
   display: flex;
@@ -54,14 +54,14 @@
   max-width: 650px;
 }
 
-/* Enforce Migra Light Non-Bold Title (PC View) */
+/* Enforce Migra Light Non-Bold Title (Desktop View) */
 .display-title,
 .hero-title,
 h1 {
   font-family: var(--font-display-light, 'Migra Light', serif) !important;
   font-weight: 300 !important;
-  font-size: 4.5rem;
-  line-height: 1.1;
+  font-size: 5.5rem;
+  line-height: 1.05;
   margin-bottom: 1.5rem;
   color: #2C221E !important;
   text-align: left;
@@ -71,7 +71,7 @@ h1 {
 .hero-subtitle,
 p {
   font-family: var(--font-body, 'Proxima Nova', sans-serif);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   color: #7A6B63;
   margin-bottom: 2.5rem;
   max-width: 80%;
@@ -122,7 +122,7 @@ p {
 }
 
 /* ==========================================================================
-   2. MOBILE VIEWPORT STYLES (< 768px)
+   2. MOBILE VIEWPORT STYLES (< 768px) - MATCHES EXACT LOCAL LAYOUT
    ========================================================================== */
 
 @media (max-width: 768px) {
@@ -130,34 +130,33 @@ p {
   .mobile-only { display: block !important; }
 
   .landing-page {
-    padding: 1.5rem 1.25rem 2.5rem 1.25rem;
+    background-color: #F9F6F0;
+    padding: 0 1.5rem 2.5rem 1.5rem;
     align-items: center;
     justify-content: space-between;
     text-align: center;
   }
 
-  /* Peeking background star illustration */
+  /* Star positioned peeking from header */
   .bg-star {
-    top: -15%;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    width: 130%;
-    height: auto;
-    max-width: none;
-    opacity: 0.9;
+    top: -35% !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: 150% !important;
+    height: auto !important;
+    max-width: none !important;
   }
 
-  /* Centered Header Logo */
+  /* Centered logo positioned cleanly beneath star graphic */
   .logo.mobile-only,
   .brand-logo {
-    font-size: 1.3rem !important;
-    margin-top: 100px; /* Positions logo cleanly under top graphic */
-    margin-bottom: 1.5rem !important;
+    font-size: 2rem !important;
+    margin-top: 250px !important; /* Pushes logo below the star graphics */
+    margin-bottom: 0rem !important;
     text-align: center !important;
     position: relative;
     z-index: 10;
-    letter-spacing: 2px;
   }
 
   .hero {
@@ -170,38 +169,38 @@ p {
 
   .hero-content {
     width: 100% !important;
-    max-width: 340px !important;
+    max-width: 360px !important;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  /* Enforce Non-Bold Title (Mobile Phone View) */
+  /* Enforce Non-Bold Migra Light Title at Local Scale */
   .display-title,
   .hero-title,
   h1 {
     font-family: var(--font-display-light, 'Migra Light', serif) !important;
     font-weight: 300 !important;
-    font-size: 2.25rem !important;
-    line-height: 1.15 !important;
+    font-size: 3.5rem !important;
+    line-height: 1.05 !important;
     text-align: center !important;
     margin-bottom: 1rem !important;
     color: #2C221E !important;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
   }
 
   .subtitle,
   .hero-subtitle,
   p {
-    font-size: 0.95rem !important;
+    font-size: 1.1rem !important;
     text-align: center !important;
-    margin: 0 auto 2rem auto !important;
-    max-width: 280px !important;
-    color: #6B6863 !important;
+    margin-bottom: 2.25rem !important;
+    max-width: 100% !important;
+    color: #2C221E !important;
     line-height: 1.4 !important;
   }
 
-  /* Stacked Mobile Action Buttons */
+  /* Stacked action buttons */
   .action-stack,
   .hero-actions,
   .button-group {
@@ -209,7 +208,7 @@ p {
     flex-direction: column !important;
     gap: 0.75rem !important;
     width: 100% !important;
-    max-width: 260px !important;
+    max-width: 240px !important;
     margin: 0 auto !important;
   }
 
@@ -218,8 +217,11 @@ p {
   .btn-outline,
   .btn-text {
     width: 100% !important;
-    text-align: center !important;
-    padding: 0.85rem !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 12px !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
     box-sizing: border-box;
+    text-align: center !important;
   }
 }
