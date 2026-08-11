@@ -7,86 +7,88 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class DataService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiUrl; // e.g., https://student-management-system-c3g8.onrender.com
 
   constructor(private http: HttpClient) { }
 
-  // Fetch Students
-  // getStudent(): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/students`); 
-  // }
-
-  // Fetch Departments
+  // --- Department Endpoints ---
   getDepartment(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/departments`);
+    return this.http.get(`${this.apiUrl}/private/departments`);
   }
-  addStudent(student: any): Observable<any> {
-  return this.http.post('http://localhost:8080/private/students', student);
-  }
-  // Add this inside data.service.ts
-  deleteStudent(id: number): Observable<any> {
-  return this.http.delete(`http://localhost:8080/private/students/${id}`);
-  }
-  addDepartment(departmentData: { name: string; headOfDepartment: string }): Observable<any> {
-  return this.http.post(`${this.apiUrl}/departments`, departmentData);
+
+  getDepartments(page: number = 0, size: number = 5): Observable<any> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get(`${this.apiUrl}/private/departments`, { params });
   }
 
   getDepartmentById(id: number | string): Observable<any> {
-  return this.http.get(`${this.apiUrl}/departments/${id}`);
-}
+    return this.http.get(`${this.apiUrl}/private/departments/${id}`);
+  }
 
-updateDepartment(id: number | string, departmentData: { name: string; headOfDepartment: string }): Observable<any> {
-  return this.http.put(`${this.apiUrl}/departments/${id}`, departmentData);
-}
+  addDepartment(departmentData: { name: string; headOfDepartment: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/private/departments`, departmentData);
+  }
 
-// --- Student Endpoints ---
-getStudentById(id: number | string): Observable<any> {
-  return this.http.get(`${this.apiUrl}/students/${id}`);
-}
+  updateDepartment(id: number | string, departmentData: { name: string; headOfDepartment: string }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/private/departments/${id}`, departmentData);
+  }
 
-updateStudent(id: number | string, studentData: any): Observable<any> {
-  return this.http.put(`${this.apiUrl}/students/${id}`, studentData);
-}
+  deleteDepartment(id: number | string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/private/departments/${id}`);
+  }
 
-// --- Pagination Support ---
-getDepartments(page: number = 0, size: number = 5): Observable<any> {
-  const params = new HttpParams()
-    .set('page', page.toString())
-    .set('size', size.toString());
+  // --- Student Endpoints ---
+  getStudents(page: number = 0, size: number = 5): Observable<any> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
 
-  return this.http.get(`${this.apiUrl}/departments`, { params });
-}
+    return this.http.get(`${this.apiUrl}/private/students`, { params });
+  }
 
-getStudents(page: number = 0, size: number = 5): Observable<any> {
-  const params = new HttpParams()
-    .set('page', page.toString())
-    .set('size', size.toString());
+  getStudentById(id: number | string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/private/students/${id}`);
+  }
 
-  return this.http.get(`${this.apiUrl}/students`, { params });
-}
-deleteDepartment(id: number | string): Observable<any> {
-  return this.http.delete(`${this.apiUrl}/departments/${id}`);
-}
-reassignRollNumbers(): Observable<any> {
-  return this.http.put(`${this.apiUrl}/students/reassign-roll-numbers`, {});
-}
-getStaffByDepartment(deptId: number | string): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/staff/department/${deptId}`);
-}
+  addStudent(student: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/private/students`, student);
+  }
 
-addStaffManually(deptId: number | string, staffData: any): Observable<any> {
-  return this.http.post<any>(`${this.apiUrl}/staff/department/${deptId}`, staffData);
-}
+  updateStudent(id: number | string, studentData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/private/students/${id}`, studentData);
+  }
 
-uploadStaffExcel(deptId: number | string, file: File): Observable<any> {
-  const formData = new FormData();
-  formData.append('file', file);
-  return this.http.post(`${this.apiUrl}/staff/department/${deptId}/upload-excel`, formData);
-}
-deleteStaff(id: number | string): Observable<any> {
-  return this.http.delete(`${this.apiUrl}/staff/${id}`);
-}
-updateStaff(id: number | string, staffData: any): Observable<any> {
-  return this.http.put<any>(`${this.apiUrl}/staff/${id}`, staffData);
-}
+  deleteStudent(id: number | string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/private/students/${id}`);
+  }
+
+  reassignRollNumbers(): Observable<any> {
+    return this.http.put(`${this.apiUrl}/private/students/reassign-roll-numbers`, {});
+  }
+
+  // --- Staff Endpoints ---
+  getStaffByDepartment(deptId: number | string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/private/staff/department/${deptId}`);
+  }
+
+  addStaffManually(deptId: number | string, staffData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/private/staff/department/${deptId}`, staffData);
+  }
+
+  uploadStaffExcel(deptId: number | string, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.apiUrl}/private/staff/department/${deptId}/upload-excel`, formData);
+  }
+
+  updateStaff(id: number | string, staffData: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/private/staff/${id}`, staffData);
+  }
+
+  deleteStaff(id: number | string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/private/staff/${id}`);
+  }
 }
