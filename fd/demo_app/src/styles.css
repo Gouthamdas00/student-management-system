@@ -50,7 +50,7 @@
   /* Font Families with Google Font Fallbacks */
   --font-display-bold: 'Migra Bold', 'Instrument Serif', Georgia, serif;
   --font-display-light: 'Migra Light', 'Instrument Serif', Georgia, serif;
-  --font-body: 'Proxima Nova', 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
 /* ==========================================================================
