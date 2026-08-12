@@ -87,7 +87,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let student of filteredStudents" style="border-bottom: 1px solid rgba(0,0,0,0.03); font-family: var(--font-display-light);">
+              <tr *ngFor="let student of filteredStudents" style="border-bottom: 1px solid rgba(0,0,0,0.03); font-family: var(--font-body);">
                 <td style="padding: 1.25rem 0;padding-right:1rem; font-weight: 600; color: #2C221E;text-align: center;">{{ student.rollNumber }}</td>
                 <td style="padding: 1.25rem 0; color: #2C221E; font-weight: 500;padding-left:1.5rem;">{{ student.name }}</td>
                 <td style="padding: 1.25rem 0; color: #7A6B63;">{{ student.departmentName || student.department?.name || 'N/A' }}</td>

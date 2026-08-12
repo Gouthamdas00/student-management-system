@@ -72,7 +72,7 @@
                 *ngFor="let dept of filteredDepartments" 
                 (click)="navigateToStaff(dept.id)"
                 class="department-row"
-                style="border-bottom: 1px solid rgba(0,0,0,0.03); cursor: pointer; transition: background 0.15s ease;">
+                style="border-bottom: 1px solid rgba(0,0,0,0.03); cursor: pointer; transition: background 0.15s ease; font-family: var(--font-body);">
                 
                 <!-- Center aligned Dept ID cell -->
                 <td style="padding: 1.25rem 0; font-weight: 600; color: #2C221E; text-align: center;">{{ dept.id || dept.code }}</td>
