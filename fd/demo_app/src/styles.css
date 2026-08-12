@@ -75,7 +75,7 @@ body {
 
 /* Explicit Heading Assignments (Fixes Times New Roman Fallback) */
 h1, h2, h3, h4, .page-title, .brand-logo {
-  font-family: var(--font-display-bold) !important;
+  font-family: var(--font-display-light) !important;
   font-weight: normal;
   color: var(--text-dark);
 }
