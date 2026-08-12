@@ -81,8 +81,8 @@ p {
 
 .bg-star {
   position: absolute;
-  top: 50%;
-  right: -10vw;
+  top: 83%;
+  right: -13vw;
   transform: translateY(-50%);
   height: 140vh;
   width: auto;
@@ -139,7 +139,7 @@ p {
 
   /* Star positioned peeking from header */
   .bg-star {
-    top: -35% !important;
+    top: -43%!important;
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
