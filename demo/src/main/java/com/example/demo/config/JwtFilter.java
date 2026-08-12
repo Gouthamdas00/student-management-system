@@ -2,7 +2,9 @@ package com.example.demo.config;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationContext;
@@ -55,23 +57,35 @@ public class JwtFilter extends OncePerRequestFilter {
                 UserDetails userDetails = context.getBean(MyUserDetailService.class).loadUserByUsername(username);
 
                 if (JWTservice.validateToken(token, userDetails)) {
-                    Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+                    
+                    // ==========================================================================
+                    // [NEW FIX] Combine DB authorities AND granular roles/permissions from JWT token
+                    // (e.g. "DEPARTMENT_READ", "ROLE_ADMIN", "STUDENT_READ")
+                    // ==========================================================================
+                    Set<GrantedAuthority> combinedAuthorities = new HashSet<>();
 
-                    if (authorities == null || authorities.isEmpty()) {
-                        List<String> rolesFromToken = JWTservice.extractRoles(token);
-                        if (rolesFromToken != null) {
-                            authorities = rolesFromToken.stream()
-                                    .map(SimpleGrantedAuthority::new)
-                                    .collect(Collectors.toList());
-                        }
+                    // 1. Add DB user authorities if present
+                    if (userDetails.getAuthorities() != null) {
+                        combinedAuthorities.addAll(userDetails.getAuthorities());
                     }
 
+                    // 2. Always merge roles/permissions stored in the JWT token payload
+                    List<String> rolesFromToken = JWTservice.extractRoles(token);
+                    if (rolesFromToken != null && !rolesFromToken.isEmpty()) {
+                        for (String role : rolesFromToken) {
+                            combinedAuthorities.add(new SimpleGrantedAuthority(role));
+                        }
+                    }
                     UsernamePasswordAuthenticationToken authtoken = 
-                        new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+                        new UsernamePasswordAuthenticationToken(userDetails, null, combinedAuthorities);
                     
                     authtoken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authtoken);
+                    System.out.println("DEBUG: Successfully authenticated user: " + username + " | Granted Authorities: " + combinedAuthorities);
+                } else {
+                    System.err.println("DEBUG: Token validation returned false for: " + username);
                 }
+                
             } catch (Exception e) {
                 System.err.println("DEBUG: User loading/validation exception: " + e.getMessage());
             }

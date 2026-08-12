@@ -10,7 +10,9 @@ import com.example.demo.repository.Departmentrepo;
 import com.example.demo.repository.Studentrepo;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,9 +85,24 @@ public class Departmentservice {
     // ==========================================
     @Transactional(readOnly = true)
     public Page<DepartmentResponseDTO> getPaginatedDepartments(Pageable pageable) {
-        return departmentrepo.findAll(pageable)
-                .map(this::convertToDTO);
+    // ==========================================================================
+    // [NEW FIX] Check if the requested sort parameter is 'studentCount'
+    // ==========================================================================
+    Sort.Order studentCountOrder = pageable.getSort().getOrderFor("studentCount");
+
+    if (studentCountOrder != null) {
+        Pageable cleanPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        
+        if (studentCountOrder.isDescending()) {
+            return departmentrepo.findAllOrderByStudentCountDesc(cleanPageable).map(this::convertToDTO);
+        } else {
+            return departmentrepo.findAllOrderByStudentCountAsc(cleanPageable).map(this::convertToDTO);
+        }
     }
+
+    // Default JPA sorting for entity fields (e.g. name, id)
+    return departmentrepo.findAll(pageable).map(this::convertToDTO);
+}
 
     // ==========================================
     // 6. Update Department

@@ -1,14 +1,11 @@
 package com.example.demo.services;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import java.util.List;

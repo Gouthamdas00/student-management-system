@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.ERROR, jakarta.servlet.DispatcherType.FORWARD).permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/public/**", "/error").permitAll()
+                .requestMatchers(HttpMethod.GET, "/private/departments/**").authenticated()
                 .requestMatchers("/private/**").authenticated() 
                 .anyRequest().authenticated()                
             )
